@@ -17,7 +17,5 @@ public class Turmas {
     public String getCodigo() {return codigo; }
     public String getProfessor() {return professor; }
     public String getHorario() {return horario; }
-    public String getSala() {return sala; } //acessar o atributo sala
-
-
+    public String getSala() {return sala; }
 }
