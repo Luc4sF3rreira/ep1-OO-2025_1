@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SistemaAcademico",
+            "request": "launch",
+            "mainClass": "SistemaAcademico",
+            "projectName": "EP1 OO_f0847bae"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
