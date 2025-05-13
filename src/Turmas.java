@@ -7,11 +7,11 @@ public class Turmas extends Disciplina {
     private FormadeAvaliação avaliação;
     private String modalidade;
     private String sala;
-    private String horario;
+    private String turmaHorario;
     private Integer maxAlunos;
     private List<Integer> alunosMatriculados;
 
-    public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, FormadeAvaliação avaliação, String modalidade, String sala, String horario, Integer maxAlunos) {
+    public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, FormadeAvaliação avaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos) {
         super(disciplina.getNome(), disciplina.getCodigo(), disciplina.getCargaHoraria(), disciplina.getPreRequisitos()); // Adjust parameters as per Disciplina's constructor
         this.professor = professor;
         this.semestre = semestre;
@@ -19,7 +19,7 @@ public class Turmas extends Disciplina {
         this.avaliação = avaliação;
         this.modalidade = modalidade;
         this.sala = sala;
-        this.horario = horario;
+        this.turmaHorario = turmaHorario;
         this.maxAlunos = maxAlunos;
     }
 
@@ -29,7 +29,7 @@ public class Turmas extends Disciplina {
     public FormadeAvaliação getAvaliação() { return avaliação; }
     public String getModalidade() { return modalidade; }
     public String getSala() { return sala; }
-    public String getHorario() { return horario; }
+    public String getHorario() { return turmaHorario; }
     public Integer getMaxAlunos() { return maxAlunos; }
     public List<Integer> getAlunosMatriculados() { return alunosMatriculados; }
 

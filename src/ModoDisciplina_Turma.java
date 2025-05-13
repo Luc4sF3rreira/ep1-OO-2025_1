@@ -115,6 +115,22 @@ public class ModoDisciplina_Turma {
         System.out.print("Digite o horário da turma: ");
         String horario = scanner.nextLine();
 
+        List<Turmas> horarios = new ArrayList<>();
+        boolean horarioOcupado;
+
+        do {
+            horarioOcupado = false;
+            for (Turmas turmaHorario : horarios) {
+                if (turmaHorario.getHorario().equals(horario)) {
+                    horarioOcupado = true;
+                    System.out.println("Horário já cadastrado. Digite um horário diferente.");
+                    System.out.print("Digite o horário da turma: ");
+                    horario = scanner.nextLine();
+                    break;
+                }
+            }
+        } while (horarioOcupado);
+
         System.out.print("Digite a capacidade máxima de alunos: ");
         int capacidadeMaxima = scanner.nextInt();
         scanner.nextLine(); 

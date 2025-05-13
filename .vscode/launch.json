@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Sistema_Academico",
+            "request": "launch",
+            "mainClass": "Sistema_Academico",
+            "projectName": "EP1 OO_f0847bae"
+        },
+        {
+            "type": "java",
             "name": "SistemaAcademico",
             "request": "launch",
             "mainClass": "SistemaAcademico",
