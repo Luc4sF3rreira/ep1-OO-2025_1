@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Disciplina {
-    private String nome;
+    protected String nome;
     private String codigo;
     private int cargaHoraria;
     private List<String> preRequisitos;
@@ -17,7 +17,9 @@ public class Disciplina {
     public String getCodigo() {return codigo; }
     public int getCargaHoraria() {return cargaHoraria; }
     public List<String> getPreRequisitos() {return preRequisitos; }
-    }
+    
+}
+
 
 
 
