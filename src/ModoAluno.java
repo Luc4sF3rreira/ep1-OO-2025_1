@@ -8,7 +8,6 @@ public class ModoAluno {
         ModoAluno modoAluno = new ModoAluno();
         modoAluno.cadastrarAluno();
     }
-
     public void cadastrarAluno() {
         Scanner scanner = new Scanner(System.in);
 
@@ -22,10 +21,14 @@ public class ModoAluno {
         String curso = scanner.nextLine();
 
         Aluno novoAluno = new Aluno(nome, matricula, curso);
-        System.out.println("Aluno cadastrado com sucesso: " + novoAluno);
+        System.out.println("---Aluno cadastrado com sucesso!--- ");
+        System.out.println("Nome: " + novoAluno.getNome());
+        System.out.println("Matrícula: " + novoAluno.getMatricula());
+        System.out.println("Curso: " + novoAluno.getCurso());
 
-        System.out.print("Deseja cadastrar outro aluno? (s/n): ");
+        System.out.print("Deseja cadastrar mais alunos? (s/n): ");
         String resposta = scanner.nextLine();
+        List<Aluno> alunos = new ArrayList<>();
         while (resposta.equalsIgnoreCase("s")) {
             System.out.print("Digite o nome do aluno: ");
             nome = scanner.nextLine();
@@ -36,30 +39,28 @@ public class ModoAluno {
             System.out.print("Digite o curso do aluno: ");
             curso = scanner.nextLine();
 
-            novoAluno = new Aluno(nome, matricula, curso);
-            System.out.println("Aluno cadastrado com sucesso: " + novoAluno);
+            Aluno aluno = new Aluno(nome, matricula, curso);
+            alunos.add(aluno);
+            System.out.println("---Aluno cadastrado com sucesso!--- ");
+            System.out.println("Nome: " + aluno.getNome());
+            System.out.println("Matrícula: " + aluno.getMatricula());
+            System.out.println("Curso: " + aluno.getCurso());
 
-            System.out.print("Deseja cadastrar outro aluno? (s/n): ");
+            System.out.print("Deseja cadastrar mais alunos? (s/n): ");
             resposta = scanner.nextLine();
+            
         }
-        System.out.println("Cadastro de alunos finalizado.");
-        
-        List<Aluno> listaAlunos = new ArrayList<>();
-        listaAlunos.add(novoAluno);
+    System.out.println("Cadastro finalizado.");
+}
 
-        scanner.close();
-                    
-    }
-
-    public void listarAlunos(List<Aluno> listaAlunos) {
+    public void listarAlunos(List<Aluno> alunos) {
         System.out.println("Lista de Alunos:");
-        for (Aluno aluno : listaAlunos) {
-            System.out.println(aluno);
+        for (Aluno aluno : alunos) {
+            System.out.println("Nome: " + aluno.getNome());
+            System.out.println("Matrícula: " + aluno.getMatricula());
+            System.out.println("Curso: " + aluno.getCurso());
+            System.out.println("-------------------------");
         }
-    }
-
-    public void matricularAlunoemTurma(Aluno aluno, Turmas turma) {
-        aluno.getTurmasMatriculadas().add(turma);
-        System.out.println("Aluno " + aluno.getNome() + " matriculado na turma " + turma.getNome());
     }
 }
+    

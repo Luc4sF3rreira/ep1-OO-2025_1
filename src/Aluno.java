@@ -23,14 +23,4 @@ public class Aluno {
     public List<Turmas> getTurmasMatriculadas() {return turmasMatriculadas; }
     public List<Notas> getNotas() {return notas; }
 
-    @Override
-    public String toString() {
-        return "Aluno{" +
-                "nome='" + nome + '\'' +
-                ", matricula='" + matricula + '\'' +
-                ", curso='" + curso + '\'' +
-                ", turmasMatriculadas=" + turmasMatriculadas +
-                ", notas=" + notas +
-                '}';
     }
-}
