@@ -34,22 +34,26 @@ public class Turmas extends Disciplina {
     public List<Integer> getAlunosMatriculados() { return alunosMatriculados; }
 
     public int getVagasDisponiveis() {
-        throw new UnsupportedOperationException("Unimplemented method 'getVagasDisponiveis'");
+        return maxAlunos - alunosMatriculados.size();
     }
 
     public void adicionarAluno(Aluno aluno) {
-        throw new UnsupportedOperationException("Unimplemented method 'adicionarAluno'");
+        if (alunosMatriculados.size() < maxAlunos) {
+            alunosMatriculados.add(Integer.parseInt(aluno.getMatricula()));
+        } else {
+            System.out.println("Não há vagas disponíveis na turma.");
+        }
     }
 
     public Disciplina getDisciplina() {
-        throw new UnsupportedOperationException("Unimplemented method 'getDisciplina'");
+        return new Disciplina(getNome(), getCodigo(), getCargaHoraria(), getPreRequisitos());
     }
 
     public String getCapacidadeMaxima() {
-        throw new UnsupportedOperationException("Unimplemented method 'getCapacidadeMaxima'");
+        return String.valueOf(maxAlunos);
     }
 
     public String getFormaAvaliacao() {
-        throw new UnsupportedOperationException("Unimplemented method 'getFormaAvaliacao'");
+        return String.valueOf(avaliação);
     }    
 }
