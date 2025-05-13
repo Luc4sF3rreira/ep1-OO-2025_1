@@ -4,10 +4,6 @@ import java.util.List;
 
 
 public class ModoAluno {
-    public static void main(String[] args) {
-        ModoAluno modoAluno = new ModoAluno();
-        modoAluno.cadastrarAluno();
-    }
     public void cadastrarAluno() {
         Scanner scanner = new Scanner(System.in);
 
@@ -29,6 +25,9 @@ public class ModoAluno {
         System.out.print("Deseja cadastrar mais alunos? (s/n): ");
         String resposta = scanner.nextLine();
         List<Aluno> alunos = new ArrayList<>();
+        alunos.add(novoAluno);
+
+        // Loop para cadastrar mais alunos
         while (resposta.equalsIgnoreCase("s")) {
             System.out.print("Digite o nome do aluno: ");
             nome = scanner.nextLine();
@@ -50,17 +49,5 @@ public class ModoAluno {
             resposta = scanner.nextLine();
             
         }
-    System.out.println("Cadastro finalizado.");
-}
-
-    public void listarAlunos(List<Aluno> alunos) {
-        System.out.println("Lista de Alunos:");
-        for (Aluno aluno : alunos) {
-            System.out.println("Nome: " + aluno.getNome());
-            System.out.println("Matrícula: " + aluno.getMatricula());
-            System.out.println("Curso: " + aluno.getCurso());
-            System.out.println("-------------------------");
-        }
-    }
-}
-    
+    }   
+}    

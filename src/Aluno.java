@@ -23,4 +23,6 @@ public class Aluno {
     public List<Turmas> getTurmasMatriculadas() {return turmasMatriculadas; }
     public List<Notas> getNotas() {return notas; }
 
+    public void setNota(double nota) {
     }
+}
