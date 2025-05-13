@@ -7,22 +7,20 @@ public class Aluno {
     private String matricula;
     private String curso;
     private List<Turmas> turmasMatriculadas;
-    private List<Notas> notas;
+    private List<Disciplina> disciplinasFeitas;
 
     public Aluno(String nome, String matricula, String curso) {
         this.nome = nome;
         this.matricula = matricula;
         this.curso = curso;
         this.turmasMatriculadas = new ArrayList<>();
-        this.notas = new ArrayList<>();
+        this.disciplinasFeitas = new ArrayList<>();
     }
 
     public String getNome() {return nome; }
     public String getMatricula() {return matricula; } 
     public String getCurso() {return curso; }
     public List<Turmas> getTurmasMatriculadas() {return turmasMatriculadas; }
-    public List<Notas> getNotas() {return notas; }
+    public List<Disciplina> getDisciplinasFeitas() {return disciplinasFeitas; }
 
-    public void setNota(double nota) {
-    }
 }
