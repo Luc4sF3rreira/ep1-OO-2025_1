@@ -17,9 +17,7 @@ public class Disciplina {
     public String getCodigo() {return codigo; }
     public int getCargaHoraria() {return cargaHoraria; }
     public List<String> getPreRequisitos() {return preRequisitos; }
-    
-}
-
+    }
 
 
 
