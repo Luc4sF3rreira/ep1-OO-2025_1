@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Disciplina {
     protected String nome;
@@ -17,7 +19,9 @@ public class Disciplina {
     public String getCodigo() {return codigo; }
     public int getCargaHoraria() {return cargaHoraria; }
     public List<String> getPreRequisitos() {return preRequisitos; }
-    }
+
+
+}
 
 
 

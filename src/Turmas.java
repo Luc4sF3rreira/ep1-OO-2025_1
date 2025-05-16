@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Turmas extends Disciplina {
     private String professor;
@@ -9,6 +11,7 @@ public class Turmas extends Disciplina {
     private String sala;
     private String turmaHorario;
     private Integer maxAlunos;
+    private Integer vagasDisponiveis;
     private List<Integer> alunosMatriculados;
 
     public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, FormadeAvaliação avaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos) {
@@ -32,28 +35,15 @@ public class Turmas extends Disciplina {
     public String getHorario() { return turmaHorario; }
     public Integer getMaxAlunos() { return maxAlunos; }
     public List<Integer> getAlunosMatriculados() { return alunosMatriculados; }
+    public Integer getVagasDisponiveis() { return maxAlunos - alunosMatriculados.size(); }
 
-    public int getVagasDisponiveis() {
-        return maxAlunos - alunosMatriculados.size();
-    }
-
-    public void adicionarAluno(Aluno aluno) {
+    public void adicionarAluno(Integer aluno) {
         if (alunosMatriculados.size() < maxAlunos) {
-            alunosMatriculados.add(Integer.parseInt(aluno.getMatricula()));
+            alunosMatriculados.add(aluno);
+            vagasDisponiveis--;
         } else {
-            System.out.println("Não há vagas disponíveis na turma.");
+            System.out.println("Não há vagas disponíveis na turma " + numeroTurma + ".");
         }
     }
 
-    public Disciplina getDisciplina() {
-        return new Disciplina(getNome(), getCodigo(), getCargaHoraria(), getPreRequisitos());
-    }
-
-    public String getCapacidadeMaxima() {
-        return String.valueOf(maxAlunos);
-    }
-
-    public String getFormaAvaliacao() {
-        return String.valueOf(avaliação);
-    }    
 }

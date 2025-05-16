@@ -6,12 +6,8 @@ public class ModoAluno {
         List<Aluno> alunos = new ArrayList<>();
         List<Aluno> matriculas = new ArrayList<>();
         List<Aluno> disciplinas_feitas = new ArrayList<>();
-        boolean respostas = true;
-        
-    public static void main(String[] args) {
-        ModoAluno modoAluno = new ModoAluno();
-        modoAluno.cadastrarAlunos();
-    }
+        boolean respostas = true;     
+    
     public void cadastrarAlunos() {
         Scanner scanner = new Scanner(System.in);
 
@@ -50,7 +46,7 @@ public class ModoAluno {
         
             Aluno novoAluno = new Aluno(nome, matricula, curso, tipoAluno, disciplinasFeitas);
             System.out.println("-------------------------------------------------");
-            System.out.println("---Aluno cadastrado com sucesso!--- "); 
+            System.out.println("Aluno cadastrado com sucesso!"); 
             System.out.println("Nome: " + novoAluno.getNome());
             System.out.println("Matrícula: " + novoAluno.getMatricula());
             System.out.println("Curso: " + novoAluno.getCurso());

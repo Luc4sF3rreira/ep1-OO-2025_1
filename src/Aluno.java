@@ -26,7 +26,7 @@ public class Aluno {
     public List<Disciplina> getDisciplinasFeitas() {return disciplinasFeitas; }
 
 
-    
+    //Métodos
     public void matricularTurma (Aluno aluno, Aluno matricula, Turmas turma) {
         if (turma.getVagasDisponiveis() > 0) {
             turma.adicionarAluno(aluno);
@@ -72,7 +72,7 @@ public class Aluno {
         }
     }
 
-    public void salvarDados(Aluno aluno) {
+    public void salvarDados(Aluno aluno) {        
         System.out.println("Dados do aluno " + aluno.getNome() + " salvos com sucesso.");
     }
 
