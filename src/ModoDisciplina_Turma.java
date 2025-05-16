@@ -7,17 +7,17 @@ public class ModoDisciplina_Turma {
     public void cadastrarDisciplina() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Digite o nome da disciplina: ");
+        System.out.print("Disciplina: ");
         String nome = scanner.nextLine();
 
-        System.out.print("Digite o código da disciplina: ");
+        System.out.print("Código da disciplina: ");
         String codigo = scanner.nextLine();
 
-        System.out.print("Digite a carga horária da disciplina: ");
+        System.out.print("Carga horária: ");
         int cargaHoraria = scanner.nextInt();
         scanner.nextLine(); 
 
-        System.out.print("Digite os pré-requisitos da disciplina (separados por vírgula): ");
+        System.out.print("Pré-requisitos da disciplina (separados por vírgula): ");
         String preRequisitosInput = scanner.nextLine();
         List<String> preRequisitos = List.of(preRequisitosInput.split(","));
 
@@ -28,24 +28,24 @@ public class ModoDisciplina_Turma {
         System.out.println("Carga Horária: " + novaDisciplina.getCargaHoraria());
         System.out.println("Pré-requisitos: " + novaDisciplina.getPreRequisitos());
 
-        System.out.print("Deseja cadastrar mais disciplinas? (s/n): ");
+        System.out.print("Deseja cadastrar mais disciplinas? (S/N): ");
         String resposta = scanner.nextLine();
         List<Disciplina> disciplinas = new ArrayList<>();
         disciplinas.add(novaDisciplina);
 
         // Loop para cadastrar mais disciplinas
-        while (resposta.equalsIgnoreCase("s")) {
-            System.out.print("Digite o nome da disciplina: ");
+        while (resposta.equalsIgnoreCase("S")) {
+            System.out.print("Disciplina: ");
             nome = scanner.nextLine();
 
-            System.out.print("Digite o código da disciplina: ");
+            System.out.print("Código da disciplina: ");
             codigo = scanner.nextLine();
 
-            System.out.print("Digite a carga horária da disciplina: ");
+            System.out.print("Carga horária: ");
             cargaHoraria = scanner.nextInt();
             scanner.nextLine(); 
 
-            System.out.print("Digite os pré-requisitos da disciplina (separados por vírgula): ");
+            System.out.print("Pré-requisitos da disciplina (separados por vírgula): ");
             preRequisitosInput = scanner.nextLine();
             preRequisitos = List.of(preRequisitosInput.split(","));
 
@@ -148,6 +148,5 @@ public class ModoDisciplina_Turma {
         }
         System.out.println("Horário: " + novaTurma.getHorario());
         System.out.println("Capacidade Máxima: " + novaTurma.getCapacidadeMaxima());
-    }
-
+        }        
     }

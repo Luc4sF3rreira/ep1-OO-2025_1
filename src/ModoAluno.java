@@ -4,36 +4,45 @@ import java.util.List;
 
 
 public class ModoAluno {
+    // Método para cadastrar um aluno
+    public static void main(String[] args) {
+        ModoAluno modoAluno = new ModoAluno();
+        modoAluno.matricularTurma(null, null, null);
+    }
     public void cadastrarAluno() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Digite o nome do aluno: ");
+        System.out.print("Digite seu nome: ");
         String nome = scanner.nextLine();
-
-        System.out.print("Digite a matrícula do aluno: ");
-        String matricula = scanner.nextLine();
-        
+        System.out.print("Digite sua matrícula: ");
+        String matricula = scanner.nextLine();        
         List<Aluno> alunos = new ArrayList<>();
         boolean matriculaExiste;
-
         do {
             matriculaExiste = false;
             for (Aluno aluno : alunos) {
             if (aluno.getMatricula().equals(matricula)) {
                 matriculaExiste = true;
                 System.out.println("Matrícula já cadastrada. Digite uma matrícula diferente.");
-                System.out.print("Digite a matrícula do aluno: ");
+                System.out.print("Digite outra matrícula: ");
                 matricula = scanner.nextLine();
                 break;
             }
             }
         } while (matriculaExiste);
 
-        System.out.print("Digite o curso do aluno: ");
+        System.out.print("Digite o curso que você faz: ");
         String curso = scanner.nextLine();
 
-        System.out.print("Digite o tipo de aluno(comum/especial): ");
+        System.out.print("Tipo de aluno (comum/especial): ");
         String tipoAluno = scanner.nextLine();
+        while (!tipoAluno.equalsIgnoreCase("comum") && !tipoAluno.equalsIgnoreCase("especial")) {
+            System.out.println("Tipo de aluno inválido. Digite 'comum' ou 'especial': ");
+            tipoAluno = scanner.nextLine();
+        }
+
+        System.out.print("Digite as disciplinas já feitas (separadas por vírgula): ");
+        String disciplinasFeitas = scanner.nextLine();
 
         Aluno novoAluno = new Aluno(nome, matricula, curso);
         System.out.println("---Aluno cadastrado com sucesso!--- ");
@@ -42,37 +51,44 @@ public class ModoAluno {
         System.out.println("Curso: " + novoAluno.getCurso());
         System.out.println("Tipo: " + tipoAluno);
 
-        System.out.print("Deseja cadastrar mais alunos? (s/n): ");
+        System.out.print("Deseja cadastrar mais alunos? (S/N): ");
         String resposta = scanner.nextLine();
         alunos.add(novoAluno);
 
         // Loop para cadastrar mais alunos
         while (resposta.equalsIgnoreCase("s")) {
-            System.out.print("Digite o nome do aluno: ");
+            System.out.print("Digite seu nome: ");
             nome = scanner.nextLine();
 
-            System.out.print("Digite a matrícula do aluno: ");
+            System.out.print("Digite sua matrícula: ");
             matricula = scanner.nextLine();
 
-            matriculaExiste = false;
-            for (Aluno aluno : alunos) {
-                if (aluno.getMatricula().equals(matricula)) {
-                    matriculaExiste = true;
-                    System.out.println("Matrícula já cadastrada. Digite uma matrícula diferente.");
-                    System.out.print("Digite a matrícula do aluno: ");
-                    matricula = scanner.nextLine();
-                    break;
+            do {
+                matriculaExiste = false;
+                for (Aluno aluno : alunos) {
+                    if (aluno.getMatricula().equals(matricula)) {
+                        matriculaExiste = true;
+                        System.out.println("Matrícula já cadastrada. Digite uma matrícula diferente.");
+                        System.out.print("Digite outra matrícula: ");
+                        matricula = scanner.nextLine();
+                        break;
+                    }
                 }
-            }
-
-            System.out.print("Digite o curso do aluno: ");
+            } while (matriculaExiste);                     
+                
+                
+            System.out.print("Digite o curso que você faz: ");
             curso = scanner.nextLine();
 
-            System.out.print("Digite o tipo de aluno(comum/especial): ");
+            System.out.print("Tipo de aluno (comum/especial): ");
             tipoAluno = scanner.nextLine();
 
             System.out.print("Digite as disciplinas já feitas (separadas por vírgula): ");
-            String disciplinasFeitas = scanner.nextLine();
+            String disciplinasFeitasInput = scanner.nextLine();
+            List<Disciplina> disciplinas = new ArrayList<>();
+            for (String nomeDisciplina : disciplinasFeitasInput.split(",")) {
+                disciplinas.add(new Disciplina(nomeDisciplina.trim(), "", 0, new ArrayList<>()));
+            }
 
             Aluno aluno = new Aluno(nome, matricula, curso);
             alunos.add(aluno);
@@ -82,9 +98,16 @@ public class ModoAluno {
             System.out.println("Curso: " + aluno.getCurso());
             System.out.println("Tipo: " + tipoAluno);
 
-            System.out.print("Deseja cadastrar mais alunos? (s/n): ");
+            System.out.print("Deseja cadastrar mais alunos? (S/N): ");
             resposta = scanner.nextLine();
             
+        }
+        System.out.println("Alunos cadastrado(s) com sucesso!");
+        for (Aluno aluno : alunos) {
+            System.out.println("Nome: " + aluno.getNome());
+            System.out.println("Matrícula: " + aluno.getMatricula());
+            System.out.println("Curso: " + aluno.getCurso());
+            System.out.println("Tipo: " + tipoAluno);
         }
     }
     
