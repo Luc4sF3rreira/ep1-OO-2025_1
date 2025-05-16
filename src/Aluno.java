@@ -22,24 +22,6 @@ public class Aluno {
     public String getCurso() {return curso; }
     public List<Turmas> getTurmasMatriculadas() {return turmasMatriculadas; }
     public List<Disciplina> getDisciplinasFeitas() {return disciplinasFeitas; }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-    public void setCurso(String curso) {
-        this.curso = curso;
-    }
-    public void setTurmasMatriculadas(List<Turmas> turmasMatriculadas) {
-        this.turmasMatriculadas = turmasMatriculadas;
-    }   
 
-    public void setDisciplinasFeitas(List<Disciplina> disciplinasFeitas) {
-        this.disciplinasFeitas = disciplinasFeitas;
-    }
-    public void adicionarDisciplinaFeita(Disciplina disciplina) {
-        this.disciplinasFeitas.add(disciplina);
-    }
 
 }

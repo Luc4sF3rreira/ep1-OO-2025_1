@@ -4,11 +4,6 @@ import java.util.List;
 
 
 public class ModoAluno {
-    // Método para cadastrar um aluno
-    public static void main(String[] args) {
-        ModoAluno modoAluno = new ModoAluno();
-        modoAluno.matricularTurma(null, null, null);
-    }
     public void cadastrarAluno() {
         Scanner scanner = new Scanner(System.in);
 
