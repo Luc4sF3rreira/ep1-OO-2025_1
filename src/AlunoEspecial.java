@@ -10,8 +10,8 @@ public class AlunoEspecial extends Aluno {
             turma.adicionarAluno(aluno);
             aluno.getTurmasMatriculadas().add(turma);
 
-            if (!turma.getDisciplina().getPreRequisitos().isEmpty()) {
-                for (String preRequisito : turma.getDisciplina().getPreRequisitos()) {
+            if (!turma.getPreRequisitos().isEmpty()) {
+                for (String preRequisito : turma.getPreRequisitos()) {
                     if (aluno.getDisciplinasFeitas().stream().noneMatch(disciplina -> disciplina.getNome().equals(preRequisito))) {
                         System.out.println("Aluno " + aluno.getNome() + " não pode se matricular na turma " + turma.getNome() +
                                 " porque não completou o pré-requisito: " + preRequisito + ".");

@@ -12,7 +12,8 @@ public class Turmas extends Disciplina {
     private String turmaHorario;
     private Integer maxAlunos;
     private Integer vagasDisponiveis;
-    private List<Integer> alunosMatriculados;
+    private Integer vagasOcupadas;
+    private List<Aluno> alunosMatriculados;
 
     public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, FormadeAvaliação avaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos) {
         super(disciplina.getNome(), disciplina.getCodigo(), disciplina.getCargaHoraria(), disciplina.getPreRequisitos()); // Adjust parameters as per Disciplina's constructor
@@ -34,11 +35,13 @@ public class Turmas extends Disciplina {
     public String getSala() { return sala; }
     public String getHorario() { return turmaHorario; }
     public Integer getMaxAlunos() { return maxAlunos; }
-    public List<Integer> getAlunosMatriculados() { return alunosMatriculados; }
-    public Integer getVagasDisponiveis() { return maxAlunos - alunosMatriculados.size(); }
+    public Integer getVagasOcupadas() { return vagasOcupadas; }
+    public void setVagasOcupadas(Integer vagasOcupadas) {this.vagasOcupadas = alunosMatriculados.size(); }
+    public List<Aluno> getAlunosMatriculados() { return alunosMatriculados; }
+    public Integer getVagasDisponiveis() { return maxAlunos - vagasOcupadas; }
 
-    public void adicionarAluno(Integer aluno) {
-        if (alunosMatriculados.size() < maxAlunos) {
+    public void adicionarAluno(Aluno aluno) {
+        if (vagasOcupadas < maxAlunos) {
             alunosMatriculados.add(aluno);
             vagasDisponiveis--;
         } else {
