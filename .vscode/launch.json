@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "EP1 OO_f0847bae"
+        },
+        {
+            "type": "java",
             "name": "ModoAlunos",
             "request": "launch",
             "mainClass": "ModoAlunos",

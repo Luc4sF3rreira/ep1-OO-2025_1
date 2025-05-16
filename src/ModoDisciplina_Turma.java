@@ -3,12 +3,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ModoDisciplina_Turma {
-    public void cadastrarDisciplinas() {
-        Scanner scanner = new Scanner(System.in);
-        List<Disciplina> disciplinas = new ArrayList<>();
-        List<String> preRequisitos = new ArrayList<>();
-        boolean resposta = true;
+    Scanner scanner = new Scanner(System.in);
+    List<Disciplina> disciplinas = new ArrayList<>();
+    List<String> preRequisitos = new ArrayList<>();
+    boolean resposta = true;
 
+    public void cadastrarDisciplinas() {
         while (resposta) {
             System.out.print("Digite o nome da disciplina: ");
             String nome = scanner.nextLine();
@@ -31,6 +31,7 @@ public class ModoDisciplina_Turma {
 
             System.out.print("Digite a carga horária da disciplina: ");
             int cargaHoraria = scanner.nextInt();
+            scanner.nextLine(); 
             
             System.out.print("Digite os pré-requisitos da disciplina (separados por vírgula): ");
             String preRequisitosInput = scanner.nextLine();
@@ -58,8 +59,21 @@ public class ModoDisciplina_Turma {
         }
     }
 
+    public List<Disciplina> getDisciplinas() {return disciplinas;}
+
+    public void listarDisciplinas(List<Disciplina> disciplinas) {
+        System.out.println("-------------------------------------------------");
+        System.out.println("Disciplinas cadastradas:");
+        for (Disciplina disciplina : disciplinas) {
+            System.out.println("Nome: " + disciplina.getNome());
+            System.out.println("Código: " + disciplina.getCodigo());
+            System.out.println("Carga Horária: " + disciplina.getCargaHoraria());
+            System.out.println("Pré-requisitos: " + disciplina.getPreRequisitos());
+            System.out.println("-------------------------------------------------");
+        }
+    }
+
     public void cadastrarTurmas() {
-        Scanner scanner = new Scanner(System.in);
         List<Turmas> turmas = new ArrayList<>();
         List<Turmas> salas = new ArrayList<>();                   
 

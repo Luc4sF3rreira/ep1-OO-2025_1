@@ -66,8 +66,8 @@ public class ModoAluno {
     }
 
     public void listarAlunos() {
-        for (Aluno aluno : alunos) {
-            System.out.println("---Lista de Alunos---");
+        System.out.println("---Lista de Alunos---");
+        for (Aluno aluno : alunos) {    
             System.out.println("Nome: " + aluno.getNome() + ", Matrícula: " + aluno.getMatricula() + ", Curso: " + aluno.getCurso());
         }
     }
