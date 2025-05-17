@@ -28,6 +28,10 @@ public class Aluno {
 
     //Métodos
     public void matricularTurma (Aluno aluno, Aluno matricula, Turmas turma) {
+        System.out.println("Turmas disponíveis para matrícula:");
+        for (Turmas t : aluno.getTurmasMatriculadas()) {
+            System.out.println("- " + t.getNome() + " (" + t.getSemestre() + ")");
+        }
         if (turma.getVagasDisponiveis() > 0) {
             turma.adicionarAluno(aluno);
             aluno.getTurmasMatriculadas().add(turma);
@@ -79,8 +83,4 @@ public class Aluno {
     public void carregarDados(Aluno aluno) {
         System.out.println("Dados do aluno " + aluno.getNome() + " carregados com sucesso.");
     }
-
-
-
-
 }
