@@ -12,7 +12,7 @@ public class AlunoEspecial extends Aluno {
 
             if (!turma.getPreRequisitos().isEmpty()) {
                 for (String preRequisito : turma.getPreRequisitos()) {
-                    if (aluno.getDisciplinasFeitas().stream().noneMatch(disciplina -> disciplina.getNome().equals(preRequisito))) {
+                    if (aluno.getDisciplinasFeitas().stream().noneMatch(disciplina -> disciplina.equals(preRequisito)))
                         System.out.println("Aluno " + aluno.getNome() + " não pode se matricular na turma " + turma.getNome() +
                                 " porque não completou o pré-requisito: " + preRequisito + ".");
                         return;
@@ -31,6 +31,6 @@ public class AlunoEspecial extends Aluno {
             System.out.println("Não há vagas disponíveis na turma " + turma.getNome() + ".");
         }
     }
-}
+
 
 
