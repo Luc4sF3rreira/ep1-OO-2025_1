@@ -168,7 +168,10 @@ public class ModoDisciplina_Turma {
 
         System.out.print("Digite o número máximo de alunos na turma: ");
         int maxAlunos = scanner.nextInt();
-        }              
+        }
+        
+        System.out.print("Digite o número total de aulas que serão dadas: ");
+
     }
 }           
       

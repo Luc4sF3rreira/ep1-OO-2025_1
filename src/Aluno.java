@@ -9,6 +9,7 @@ public class Aluno {
     private String tipoAluno;
     private List<Turmas> turmasMatriculadas;
     private List<String> disciplinasFeitas;
+    private Avaliacao avaliacao;
 
     public Aluno(String nome, String matricula, String curso, String tipoAluno, String disciplinasFeitas) {
         this.nome = nome;
@@ -24,13 +25,15 @@ public class Aluno {
     public String getTipoAluno() {return tipoAluno; }
     public List<Turmas> getTurmasMatriculadas() {return turmasMatriculadas; }
     public List<String> getDisciplinasFeitas() {return disciplinasFeitas; }
+    public Avaliacao getAvaliacao () {return avaliacao;}
     public void setNome(String nome) {this.nome = nome; }
     public void setMatricula(String matricula) {this.matricula = matricula; }
     public void setCurso(String curso) {this.curso = curso; }
     public void setTipoAluno(String tipoAluno) {this.tipoAluno = tipoAluno; }
     public void setTurmasMatriculadas(List<Turmas> turmasMatriculadas) {this.turmasMatriculadas = turmasMatriculadas; }
     public void setDisciplinasFeitas(List<String> disciplinasFeitas) {this.disciplinasFeitas = disciplinasFeitas; }
-    
+   public void setAvaliacao(Avaliacao avaliacao) {this.avaliacao = avaliacao;}
+   
     //Métodos
     public void matricularTurma (Aluno aluno, Aluno matricula, Turmas turma) {
         System.out.println("Turmas disponíveis para matrícula:");

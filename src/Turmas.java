@@ -1,38 +1,44 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Turmas extends Disciplina {
     private String professor;
     private String semestre;
     private Integer numeroTurma;
-    private FormadeAvaliação avaliação;
+    private String tipoAvaliação;
     private String modalidade;
     private String sala;
     private String turmaHorario;
     private Integer maxAlunos;
+    private Integer totalAulas;
     private Integer vagasDisponiveis;
     private Integer vagasOcupadas;
     private List<Aluno> alunosMatriculados;
+    private boolean presencial;
 
-    public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, FormadeAvaliação avaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos) {
+    public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, String tipoAvaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos) {
         super(disciplina.getNome(), disciplina.getCodigo(), disciplina.getCargaHoraria(), disciplina.getPreRequisitos()); 
         this.professor = professor;
         this.semestre = semestre;
         this.numeroTurma = numeroTurma;
-        this.avaliação = avaliação;
+        this.tipoAvaliação = tipoAvaliação;
         this.modalidade = modalidade;
         this.sala = sala;
         this.turmaHorario = turmaHorario;
         this.maxAlunos = maxAlunos;
+        this.alunosMatriculados = new ArrayList<>();
     }
 
     public String getProfessor() { return professor; }
     public String getSemestre() { return semestre; }  
     public Integer getNumeroTurma() { return numeroTurma; }
-    public FormadeAvaliação getAvaliação() { return avaliação; }
+    public String getTipoAvaliacao() { return tipoAvaliação; }
     public String getModalidade() { return modalidade; }
+    public boolean isPresencial() {return presencial;}
     public String getSala() { return sala; }
     public String getHorario() { return turmaHorario; }
     public Integer getMaxAlunos() { return maxAlunos; }
+    public Integer getTotalAulas() {return totalAulas;}
     public Integer getVagasOcupadas() { return vagasOcupadas; }
     public void setVagasOcupadas(Integer vagasOcupadas) {this.vagasOcupadas = alunosMatriculados.size(); }
     public List<Aluno> getAlunosMatriculados() { return alunosMatriculados; }

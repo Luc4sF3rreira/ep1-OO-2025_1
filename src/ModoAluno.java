@@ -142,7 +142,7 @@ public class ModoAluno {
     public void listarAlunos() {
         System.out.println("---Lista de Alunos---");
         for (Aluno aluno : alunos) {    
-            System.out.println("Nome: " + aluno.getNome() + "// Matrícula: " + aluno.getMatricula() + "// Curso: " + aluno.getCurso());
+            System.out.println("Nome: " + aluno.getNome() + " // Matrícula: " + aluno.getMatricula() + " // Curso: " + aluno.getCurso());
         }
     }
 }
