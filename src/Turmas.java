@@ -14,7 +14,7 @@ public class Turmas extends Disciplina {
     private List<Aluno> alunosMatriculados;
 
     public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, FormadeAvaliação avaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos) {
-        super(disciplina.getNome(), disciplina.getCodigo(), disciplina.getCargaHoraria(), disciplina.getPreRequisitos()); // Adjust parameters as per Disciplina's constructor
+        super(disciplina.getNome(), disciplina.getCodigo(), disciplina.getCargaHoraria(), disciplina.getPreRequisitos()); 
         this.professor = professor;
         this.semestre = semestre;
         this.numeroTurma = numeroTurma;

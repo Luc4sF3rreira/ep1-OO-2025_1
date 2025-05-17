@@ -54,7 +54,7 @@ public class ModoDisciplina_Turma {
             } else if (respostaInput.equalsIgnoreCase("S")) {
                 resposta = true;
             } else {
-                System.out.println("Opção inválida. Tente novamente.");
+                System.out.println("Opção inválida. Tente novamente."); 
             }
         }
     }
@@ -74,6 +74,31 @@ public class ModoDisciplina_Turma {
     }
 
     public void cadastrarTurmas() {
+        if (disciplinas.isEmpty()) {
+            System.out.println("Nenhuma disciplina cadastrada. Cadastre uma disciplina antes de criar uma turma.");
+            return;
+        }
+
+        System.out.println("Selecione a disciplina para a qual deseja cadastrar uma turma:");
+        for (int i = 0; i < disciplinas.size(); i++) {
+            Disciplina disciplina = disciplinas.get(i);
+            System.out.println((i + 1) + ". " + disciplina.getNome() + " (" + disciplina.getCodigo() + ")");
+        }
+
+        int opcaoDisciplina = -1;
+        while (opcaoDisciplina < 1 || opcaoDisciplina > disciplinas.size()) {
+            System.out.print("Digite o número da disciplina: ");
+            if (scanner.hasNextInt()) {
+                opcaoDisciplina = scanner.nextInt();
+                scanner.nextLine();
+                if (opcaoDisciplina < 1 || opcaoDisciplina > disciplinas.size()) {
+                    System.out.println("Opção inválida. Tente novamente.");
+                }
+            } else {
+                System.out.println("Entrada inválida. Digite um número.");
+                scanner.nextLine(); 
+            }
+
         List<Turmas> turmas = new ArrayList<>();
         List<Turmas> salas = new ArrayList<>();                   
 
@@ -86,8 +111,16 @@ public class ModoDisciplina_Turma {
         System.out.print("Digite o número da turma: ");
         int numeroTurma = scanner.nextInt();        
 
-        System.out.print("Digite a forma de avaliação: ");
+        System.out.print("Digite a forma de avaliação (A ou B): ");
         String formaAvaliacao = scanner.nextLine();
+            if(formaAvaliacao.equalsIgnoreCase("A")) {
+                System.out.println("Forma de Avaliação A selecionada.");
+            } else if (formaAvaliacao.equalsIgnoreCase("B")) {
+                System.out.println("Forma de Avaliação B selecionada.");
+            } else {
+                System.out.println("Forma de Avaliação inválida. Digite 'A' ou 'B': ");
+                formaAvaliacao = scanner.nextLine();
+            }
 
         System.out.print("Digite a modalidade (presencial ou online): ");
         String modalidade = scanner.nextLine();
@@ -120,7 +153,7 @@ public class ModoDisciplina_Turma {
         do {
             horarioUnico = true;
             for (Turmas turma : turmas) {
-            // Verifica se o horário já está cadastrado para determinada sala
+            // Verifica se o horário já está cadastrado em determinada sala
             if (modalidade.equalsIgnoreCase("presencial") &&
                 turma.getSala() != null &&
                 turma.getSala().equalsIgnoreCase(sala) &&
@@ -136,5 +169,6 @@ public class ModoDisciplina_Turma {
         System.out.print("Digite o número máximo de alunos na turma: ");
         int maxAlunos = scanner.nextInt();
         }              
+    }
 }           
       
