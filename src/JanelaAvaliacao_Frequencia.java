@@ -8,6 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class JanelaAvaliacao_Frequencia extends JFrame{
+    ModoAvaliacao_Frequencia modoAF = new ModoAvaliacao_Frequencia();
+
     public JanelaAvaliacao_Frequencia() {
         super("Modo Avaliação/Frequência");
         setSize(700,500);
@@ -18,22 +20,25 @@ public class JanelaAvaliacao_Frequencia extends JFrame{
 
         JPanel botao_painel = new JPanel(new GridLayout(6,1,5,5));
         JButton botaoLancarNotas = new JButton("Lançar notas");
-        JButton botaoLancarFrequencia = new JButton("Lançar frequência");
         JButton botaoMediaFinal = new JButton("Calcular média final");
-        JButton botaoSituacao = new JButton("Situação do aluno");
-        JButton botaoGerarRelatorios = new JButton("Gerar relatórios");
-        JButton botaoMostrarBoletins = new JButton("Exibir boletins");
+        JButton botaoRelatorioTurma = new JButton("Relatório por turmas");
+        JButton botaoRelatorioDisciplina = new JButton("Relatório por disciplinas");
+        JButton botaoRelatorioProfessor = new JButton("Relatório por professores");
+        JButton botaoExibirBoletimAluno = new JButton("Boletim do aluno");
         JButton botaoVoltar = new JButton("Voltar ao menu principal");
 
         botaoLancarNotas.addActionListener(e -> lancarNotas());
-        botaoLancarFrequencia.addActionListener(e -> lancarFrequencia());
+        botaoRelatorioTurma.addActionListener(e -> relatorioTurmas());
+        botaoRelatorioDisciplina.addActionListener(e -> relatorioDisciplinas());
+        botaoRelatorioProfessor.addActionListener(e -> relatorioProfessores());
+        botaoExibirBoletimAluno.addActionListener(e -> boletinsAlunos());
 
         botao_painel.add(botaoLancarNotas);
-        botao_painel.add(botaoLancarFrequencia);
         botao_painel.add(botaoMediaFinal);
-        botao_painel.add(botaoSituacao);
-        botao_painel.add(botaoGerarRelatorios);
-        botao_painel.add(botaoMostrarBoletins);
+        botao_painel.add(botaoRelatorioTurma);
+        botao_painel.add(botaoRelatorioDisciplina);
+        botao_painel.add(botaoRelatorioProfessor);
+        botao_painel.add(botaoExibirBoletimAluno);
         botao_painel.add(botaoVoltar);
 
         panel.add(botao_painel, BorderLayout.WEST);
@@ -45,7 +50,27 @@ public class JanelaAvaliacao_Frequencia extends JFrame{
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
 
         add(panel);
-
     }
 
+    private void lancarNotas() {
+        modoAF.lancarNotasParaTurma(null);
+    }
+
+    private void relatorioTurmas() {
+        modoAF.relatorioPorTurma(null);
+    }
+
+    private void relatorioDisciplinas() {
+        modoAF.relatorioPorDisciplina(null, getName());
+    }
+
+    private void relatorioProfessores() {
+        modoAF.relatorioPorProfessor(null, getName());
+    }
+
+    private void boletinsAlunos() {
+        modoAF.exibirBoletimPorAluno(null, getName(), true);
+    }
 }
+
+
