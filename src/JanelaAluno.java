@@ -13,7 +13,7 @@ public class JanelaAluno extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
-        JPanel botaoPainel = new JPanel(new GridLayout(7,1,5,5));
+        JPanel botaoPainel = new JPanel(new GridLayout(8,1,5,5));
 
         JButton botaoCadastrarAlunos = new JButton("Cadastrar alunos");
         botaoCadastrarAlunos.setFont(botaoCadastrarAlunos.getFont().deriveFont(14.0f));
@@ -23,6 +23,9 @@ public class JanelaAluno extends JFrame {
 
         JButton botaoListarAluno = new JButton("Listar alunos");
         botaoListarAluno.setFont(botaoListarAluno.getFont().deriveFont(14.0f));
+
+        JButton botaoExcluirAluno = new JButton("Excluir aluno");
+        botaoExcluirAluno.setFont(botaoExcluirAluno.getFont().deriveFont(14.0f));
 
         JButton botaoMatricularTurma = new JButton("Matricular em turma");
         botaoMatricularTurma.setFont(botaoMatricularTurma.getFont().deriveFont(14.0f));
@@ -36,17 +39,19 @@ public class JanelaAluno extends JFrame {
         JButton botaoVoltar = new JButton("Voltar ao menu principal");
         botaoVoltar.setFont(botaoVoltar.getFont().deriveFont(14.0f));
 
-        botaoCadastrarAlunos.addActionListener(e -> cadastroAlunos());
-        botaoEditarCadastro.addActionListener(e -> editarCadastro());
-        botaoListarAluno.addActionListener(e -> listarAlunos());
-        botaoMatricularTurma.addActionListener(e -> matricularTurma());
-        botaoTrancarDisciplina.addActionListener(e -> trancarDisciplina());
-        botaoTrancarSemestre.addActionListener(e -> trancarSemestre());
-        botaoVoltar.addActionListener(e -> dispose());
+        botaoCadastrarAlunos.addActionListener(e -> modoAluno.cadastrarAlunos());
+        botaoEditarCadastro.addActionListener(e -> modoAluno.editarCadastroAluno());
+        botaoListarAluno.addActionListener(e -> modoAluno.listarAlunos());
+        botaoExcluirAluno.addActionListener(e -> modoAluno.excluirAluno());
+        botaoMatricularTurma.addActionListener(e -> modoAluno.matricularAlunoTurma());
+        botaoTrancarDisciplina.addActionListener(e -> modoAluno.trancarDisciplinaAluno());
+        botaoTrancarSemestre.addActionListener(e -> modoAluno.trancarSemestreAluno());
+        botaoVoltar.addActionListener(e -> { modoAluno.salvarDadosAlunos();dispose();});
 
         botaoPainel.add(botaoCadastrarAlunos);
         botaoPainel.add(botaoEditarCadastro);
         botaoPainel.add(botaoListarAluno);
+        botaoPainel.add(botaoExcluirAluno);
         botaoPainel.add(botaoMatricularTurma);
         botaoPainel.add(botaoTrancarDisciplina);
         botaoPainel.add(botaoTrancarSemestre);
@@ -54,30 +59,6 @@ public class JanelaAluno extends JFrame {
 
         panel.add(botaoPainel, BorderLayout.CENTER);
         add(panel);
-    }
-
-    private void cadastroAlunos() {
-        modoAluno.cadastrarAlunos();
-    }
-
-    private void editarCadastro() {
-        modoAluno.editarCadastroAluno();
-    }
-
-    private void listarAlunos() {
-        modoAluno.listarAlunos();
-    }
-
-    private void matricularTurma () {
-        modoAluno.matricularAlunoTurma();
-    }
-
-    private void trancarDisciplina () {
-        modoAluno.trancarDisciplinaAluno();
-    }
-
-    private void trancarSemestre () {
-        modoAluno.trancarSemestreAluno();
     }
 }
 

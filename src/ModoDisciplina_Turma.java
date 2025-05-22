@@ -157,32 +157,26 @@ public class ModoDisciplina_Turma {
         }
         Turmas novaTurma = new Turmas(disciplina, professor, semestre, numeroTurma, formaAvaliacao, modalidade, sala, horario, maxAlunos, totalAulas);
         turmas.add(novaTurma);
-    }        
-
-
-
-
-
-
-
-
-    public void salvarDados(String caminhoArquivo) {
-        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream(caminhoArquivo))) {
+    }    
+    
+    public void salvarDisciplinas() {
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream("disciplinas_turmas.txt"))) {
             oos.writeObject(disciplinas);
-            System.out.println("Dados salvos com sucesso em " + caminhoArquivo);
+            JOptionPane.showMessageDialog(null, "Disciplinas salvas com sucesso!");
         } catch (Exception e) {
-            System.out.println("Erro ao salvar dados: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao salvar disciplinas: " + e.getMessage());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void carregarDados(String caminhoArquivo) {
-        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream(caminhoArquivo))) {
+    public void carregarDisciplinas() {
+        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream("disciplinas_turmas.txt"))) {
             disciplinas = (List<Disciplina>) ois.readObject();
-            System.out.println("Dados carregados com sucesso de " + caminhoArquivo);
+            JOptionPane.showMessageDialog(null, "Disciplinas carregadas com sucesso!");
         } catch (Exception e) {
-            System.out.println("Erro ao carregar dados: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao carregar disciplinas: " + e.getMessage());
         }
     }
+
 }           
       

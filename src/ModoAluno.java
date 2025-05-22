@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import java.io.*;
 
 public class ModoAluno {
         List<Aluno> alunos = new ArrayList<>();
@@ -238,47 +237,40 @@ public class ModoAluno {
         JOptionPane.showMessageDialog(null,"Semestre trancado com sucesso para o aluno " + alunoEncontrado.getNome() + "!" );
     }
 
+    public void excluirAluno() {
+        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja excluir: ");
+        Aluno alunoEncontrado = null;
+        for (Aluno aluno : alunos) {
+            if (aluno.getMatricula().equals(matricula)) {
+                alunoEncontrado = aluno;
+                break;
+            }
+        }
+        if (alunoEncontrado == null) {
+            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+            return;
+        }
+        alunos.remove(alunoEncontrado);
+        JOptionPane.showMessageDialog(null, "Aluno " + alunoEncontrado.getNome() + " excluído com sucesso!");
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void salvarAlunosEmArquivo(String caminhoArquivo) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(caminhoArquivo))) {
+    public void salvarDadosAlunos() {
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream("alunos.txt"))) {
             oos.writeObject(alunos);
-            System.out.println("Dados dos alunos salvos com sucesso em " + caminhoArquivo);
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar os dados dos alunos: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar dados: " + e.getMessage());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void carregarAlunosDeArquivo(String caminhoArquivo) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(caminhoArquivo))) {
+    public void carregarDadosAlunos() {
+        java.io.File arquivo = new java.io.File("alunos.txt");
+        if (!arquivo.exists()) return;
+        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream(arquivo))) {
             alunos = (List<Aluno>) ois.readObject();
-            System.out.println("Dados dos alunos carregados com sucesso de " + caminhoArquivo);
-        } catch (FileNotFoundException e) {
-            System.out.println("Arquivo não encontrado. Nenhum dado carregado.");
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Erro ao carregar os dados dos alunos: " + e.getMessage());
+            if (alunos == null) alunos = new ArrayList<>();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar dados: " + e.getMessage());
         }
     }
-    
-
 }

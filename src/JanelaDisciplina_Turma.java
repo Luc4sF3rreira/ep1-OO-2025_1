@@ -37,11 +37,11 @@ public class JanelaDisciplina_Turma extends JFrame {
         JButton botaoVoltar = new JButton("Voltar ao Menu Principal");
         botaoVoltar.setFont(botaoVoltar.getFont().deriveFont(14.0f));
 
-        botaoCadastrarDisciplina.addActionListener(e -> cadastrarDisciplina());
+        botaoCadastrarDisciplina.addActionListener(e -> modoDT.cadastrarDisciplinas());
         botaoListarDisciplinas.addActionListener(e -> listarDisciplinas());
-        botaoCriarTurmas.addActionListener(e -> criarTurma());
+        botaoCriarTurmas.addActionListener(e -> modoDT.cadastrarTurmas());
         botaoListarTurmas.addActionListener(e -> listarTurmas());
-        botaoVoltar.addActionListener(e -> dispose());
+        botaoVoltar.addActionListener(e -> {modoDT.salvarDisciplinas(); dispose(); });
         
         botao_painel.add(botaoCadastrarDisciplina);
         botao_painel.add(botaoListarDisciplinas);
@@ -52,14 +52,8 @@ public class JanelaDisciplina_Turma extends JFrame {
         panel.add(botao_painel, BorderLayout.CENTER);
         add(panel);
     }
-    private void cadastrarDisciplina() {
-        modoDT.cadastrarDisciplinas();
-    }
     private void listarDisciplinas() {
         modoDT.listarDisciplinas(null);
-    }
-    private void criarTurma() {
-        modoDT.cadastrarTurmas();
     }
     private void listarTurmas() {
         modoDT.listarDisciplinas(null);
