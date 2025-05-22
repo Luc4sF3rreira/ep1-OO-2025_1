@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 import java.io.*;
 
 public class ModoAluno {
@@ -9,19 +9,14 @@ public class ModoAluno {
         List<Aluno> disciplinas_feitas = new ArrayList<>();
         boolean respostas = true;     
     
-    public void cadastrarAlunos() {
-        Scanner scanner = new Scanner(System.in);
-
+    public void cadastrarAlunos() {    
         while (respostas) {
-            System.out.print("Digite seu nome: ");
-            String nome = scanner.nextLine();
+            String nome = JOptionPane.showInputDialog(null, "Digite seu nome:");
 
-            System.out.print("Digite sua matrícula, precisa conter 9 dígitos: ");
-            String matricula = scanner.nextLine();
+            String matricula = JOptionPane.showInputDialog(null, "Digite sua matrícula, precisa conter 9 dígitos: ");
             while (matricula.length() != 9) {
-                System.out.println("Matrícula inválida. A matrícula deve conter 9 dígitos.");
-                System.out.print("Digite sua matrícula novamente: ");
-                matricula = scanner.nextLine();
+                JOptionPane.showMessageDialog(null, "Matrícula inválida. A matrícula deve conter 9 dígitos.");
+                matricula = JOptionPane.showInputDialog(null, "Digite sua matrícula novamente: "); 
             }           
             boolean matriculaExiste;
             do {
@@ -29,57 +24,64 @@ public class ModoAluno {
                 for (Aluno aluno : alunos) {
                     if (aluno.getMatricula().equals(matricula)) {
                         matriculaExiste = true;
-                        System.out.println("Matrícula já cadastrada. Digite uma matrícula diferente.");
-                        System.out.print("Digite outra matrícula: ");
-                        matricula = scanner.nextLine();
+                        JOptionPane.showMessageDialog(null, "Matrícula já cadastrada. Digite uma matrícula diferente.");
+                        matricula = JOptionPane.showInputDialog(null, "Digite outra matrícula:");
                         break;
                     }
                 }
             } while (matriculaExiste);
 
-            System.out.print("Digite o curso que você faz: ");
-            String curso = scanner.nextLine();
-
-            System.out.print("Tipo de aluno (Comum/Especial): ");
-            String tipoAluno = scanner.nextLine();
-            while (!tipoAluno.equalsIgnoreCase("comum") && !tipoAluno.equalsIgnoreCase("especial")) {
-                System.out.println("Tipo de aluno inválido. Digite 'Comum' ou 'Especial': ");
-                tipoAluno = scanner.nextLine();
+            String curso = JOptionPane.showInputDialog(null, "Digite o curso que você faz: ");
+            while (curso.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Curso inválido. Digite novamente.");
+                curso = JOptionPane.showInputDialog(null, "Digite o curso que você faz: ");
             }
 
-            System.out.print("Digite as disciplinas já feitas (Sem abreviações e separadas por vírgula): ");
-            String disciplinasFeitas = scanner.nextLine();
+            String tipoAluno = JOptionPane.showInputDialog(null, "Especifique o tipo de aluno (Comum/Especial):");
+            while (!tipoAluno.equalsIgnoreCase("comum") && !tipoAluno.equalsIgnoreCase("especial")) {
+                JOptionPane.showMessageDialog(null, "Tipo de aluno inválido. Digite 'Comum' ou 'Especial'");
+                tipoAluno = JOptionPane.showInputDialog(null, "Especifique novamente o tipo de aluno (Comum/Especial): ");
+            }
+            if (tipoAluno.equalsIgnoreCase("comum")) {
+                tipoAluno = "Comum";
+            } else {
+                tipoAluno = "Especial";
+            }
 
+            String disciplinasFeitas = JOptionPane.showInputDialog(null, "Digite as disciplinas já feitas (Sem abreviações e separadas por vírgula):");
+            
             List<String> listaDisciplinasFeitas = new ArrayList<>();
             for (String disciplinaFeita : disciplinasFeitas.split(",")) {
                 listaDisciplinasFeitas.add(disciplinaFeita.trim());
             }
         
             Aluno novoAluno = new Aluno(nome, matricula, curso, tipoAluno, listaDisciplinasFeitas);
-            System.out.println("-------------------------------------------------");
-            System.out.println("Aluno cadastrado com sucesso!"); 
-            System.out.println("Nome: " + novoAluno.getNome());
-            System.out.println("Matrícula: " + novoAluno.getMatricula());
-            System.out.println("Curso: " + novoAluno.getCurso());
-            System.out.println("Tipo: " + tipoAluno);
-            System.out.println("Disciplinas já feitas: " + disciplinasFeitas);
+            StringBuilder dadosAluno = new StringBuilder();
+            dadosAluno.append("Aluno cadastrado com sucesso!\n");
+            dadosAluno.append("-------------------------------------------------\n");
+            dadosAluno.append("Dados do Aluno:\n");
+            dadosAluno.append("   Nome: ").append(novoAluno.getNome()).append("\n");
+            dadosAluno.append("   Matrícula: ").append(novoAluno.getMatricula()).append("\n");
+            dadosAluno.append("   Curso: ").append(novoAluno.getCurso()).append("\n");
+            dadosAluno.append("   Tipo: ").append(tipoAluno).append("\n");
+            dadosAluno.append("   Disciplinas já feitas: ").append(disciplinasFeitas);      
+            JOptionPane.showMessageDialog(null, dadosAluno.toString());
             alunos.add(novoAluno);
-            System.out.print("Deseja cadastrar mais alunos? (S/N): ");
-            String resposta = scanner.nextLine();
+
+            String resposta = JOptionPane.showInputDialog(null, "Deseja cadastrar mais alunos? (S/N): ");
             if (resposta.equalsIgnoreCase("N")) {
                 respostas = false;
             } else if (resposta.equalsIgnoreCase("S")) {
                 respostas = true;
             } else {
-                System.out.println("Resposta inválida. Tente novamente.");       
+                JOptionPane.showMessageDialog(null, "Opção inválida. O cadastro será encerrado.");
+                respostas = false;
             }
         }
     }
 
     public void matricularAlunoTurma() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite a matrícula do aluno para matricular em uma turma: ");
-        String matricula = scanner.nextLine();
+        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja matricular: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
             if (aluno.getMatricula().equals(matricula)) {
@@ -88,19 +90,16 @@ public class ModoAluno {
             }
         }
         if (alunoEncontrado == null) {
-            System.out.println("Aluno não encontrado.");
+            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
-        System.out.print("Digite o nome da turma para matrícula: ");
-        String nomeTurma = scanner.nextLine();
+        String nomeTurma = JOptionPane.showInputDialog(null, "Digite o nome da turma para matrícula: ");
         alunoEncontrado.matricularTurma(nomeTurma);
-        System.out.println("Aluno matriculado na turma " + nomeTurma + " com sucesso!");
+        JOptionPane.showMessageDialog(null, "Aluno matriculado na turma " + nomeTurma + "com sucesso!");
     }
 
     public void editarCadastroAluno() {
-        Scanner edição = new Scanner(System.in);
-        System.out.print("Digite a matrícula do aluno que deseja editar: ");
-        String matricula = edição.nextLine();
+        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja editar: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
             if (aluno.getMatricula().equals(matricula)) {
@@ -109,42 +108,51 @@ public class ModoAluno {
             }
         }
         if (alunoEncontrado == null) {
-                System.out.println("Aluno não encontrado.");
+                JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
                 return;
             }
-
-        System.out.println("O que deseja editar?");
-        System.out.println("Nome");
-        System.out.println("Matrícula");
-        System.out.println("Curso");
-        System.out.println("Tipo de aluno");
-        System.out.println("Disciplinas já feitas");
-        System.out.print("Digite a opção desejada: ");
-        String opcao = edição.nextLine();
+        String opcao = JOptionPane.showInputDialog(null, "O que deseja editar?\n" +
+                "1. Nome\n" +
+                "2. Matrícula\n" +
+                "3. Curso\n" +
+                "4. Tipo de aluno\n" +
+                "5. Disciplinas já feitas\n" +
+                "Digite a opção desejada: ");
         switch (opcao.toLowerCase()) {
             case "nome":
-                System.out.print("Digite o novo nome: ");
-                String novoNome = edição.nextLine();
+                String novoNome = JOptionPane.showInputDialog(null, "Digite o novo nome: ");
                 alunoEncontrado.setNome(novoNome);
                 break;
             case "matrícula":
-                System.out.print("Digite a nova matrícula: ");
-                String novaMatricula = edição.nextLine();
+                String novaMatricula = JOptionPane.showInputDialog(null, "Digite a nova matrícula: ");
                 alunoEncontrado.setMatricula(novaMatricula);
+                boolean matriculaExiste;
+                do {
+                    matriculaExiste = false;
+                    for (Aluno aluno : alunos) {
+                        if (aluno.getMatricula().equals(novaMatricula)) {
+                            matriculaExiste = true;
+                            JOptionPane.showMessageDialog(null, "Matrícula já cadastrada. Digite uma matrícula diferente.");
+                            novaMatricula = JOptionPane.showInputDialog(null, "Digite outra matrícula:");
+                            break;
+                        }
+                    }
+                } while (matriculaExiste);
                 break;
             case "curso":
-                System.out.print("Digite o novo curso: ");
-                String novoCurso = edição.nextLine();
+                String novoCurso = JOptionPane.showInputDialog(null, "Digite o novo curso: ");
                 alunoEncontrado.setCurso(novoCurso);
                 break;
             case "tipo de aluno":
-                System.out.print("Digite o novo tipo de aluno (Comum/Especial): ");
-                String novoTipoAluno = edição.nextLine();
+                String novoTipoAluno = JOptionPane.showInputDialog(null, "Digite o novo tipo de aluno (Comum/Especial): ");
+                while (!novoTipoAluno.equalsIgnoreCase("comum") && !novoTipoAluno.equalsIgnoreCase("especial")) {
+                    JOptionPane.showMessageDialog(null, "Tipo de aluno inválido. Digite 'Comum' ou 'Especial'");
+                    novoTipoAluno = JOptionPane.showInputDialog(null, "Especifique novamente o tipo de aluno (Comum/Especial): ");
+                }
                 alunoEncontrado.setTipoAluno(novoTipoAluno);
                 break;
             case "disciplinas já feitas":
-                System.out.print("Digite as novas disciplinas já feitas (separadas por vírgula): ");
-                String novasDisciplinasFeitas = edição.nextLine();
+                String novasDisciplinasFeitas = JOptionPane.showInputDialog(null, "Digite as novas disciplinas já feitas (Sem abreviações e separadas por vírgulas)");
                 List<String> listaDisciplinas = new ArrayList<>();
                 for (String disciplina : novasDisciplinasFeitas.split(",")) {
                     listaDisciplinas.add(disciplina.trim());
@@ -152,30 +160,31 @@ public class ModoAluno {
                 alunoEncontrado.setDisciplinasFeitas(listaDisciplinas);
                 break;
             default:
-                System.out.println("Opção inválida.");    
-            
+                JOptionPane.showMessageDialog(null, "Opção inválida" );            
             }
         
-        System.out.println("-------------------------------------------------");
-        System.out.println("Edição feita com sucesso!");
-        System.out.println("Nome: " + alunoEncontrado.getNome());
-        System.out.println("Matrícula: " + alunoEncontrado.getMatricula());
-        System.out.println("Curso: " + alunoEncontrado.getCurso());
-        System.out.println("Tipo: " + alunoEncontrado.getTipoAluno());
-        System.out.println("Disciplinas já feitas: " + alunoEncontrado.getDisciplinasFeitas());
+        JOptionPane.showMessageDialog(null, "-------------------------------------------------");
+        JOptionPane.showMessageDialog(null, "Edição feita com sucesso!");
+        JOptionPane.showMessageDialog(null, "Nome: " + alunoEncontrado.getNome());
+        JOptionPane.showMessageDialog(null, "Matrícula: " + alunoEncontrado.getMatricula());
+        JOptionPane.showMessageDialog(null, "Curso: " + alunoEncontrado.getCurso());
+        JOptionPane.showMessageDialog(null, "Tipo: " + alunoEncontrado.getTipoAluno());
+        JOptionPane.showMessageDialog(null, "Disciplinas já feitas: " + alunoEncontrado.getDisciplinasFeitas());
     }        
     
     public void listarAlunos() {
-        System.out.println("---Lista de Alunos---");
-        for (Aluno aluno : alunos) {    
-            System.out.println("Nome: " + aluno.getNome() + " // Matrícula: " + aluno.getMatricula() + " // Curso: " + aluno.getCurso());
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "---Lista de Alunos---");
+        for (Aluno aluno : alunos) {
+            JOptionPane.showMessageDialog(null, "Nome: " + aluno.getNome() + "\nMatricula: " + aluno.getMatricula() + "\nCurso: " + aluno.getCurso() + "\nTipo: " + aluno.getTipoAluno() + "\nDisciplinas já feitas: " + aluno.getDisciplinasFeitas());    
         }
     }
 
     public void trancarDisciplinaAluno() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite a matrícula do aluno que deseja trancar uma disciplina: ");
-        String matricula = scanner.nextLine();
+        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja trancar uma disciplina: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
             if (aluno.getMatricula().equals(matricula)) {
@@ -184,20 +193,19 @@ public class ModoAluno {
             }
         }
         if (alunoEncontrado == null) {
-            System.out.println("Aluno não encontrado.");
+            JOptionPane.showMessageDialog(null,"Aluno não encontrado.");
             return;
         }
         List<Turmas> turmasMatriculadas = alunoEncontrado.getTurmasMatriculadas();
         if (turmasMatriculadas == null || turmasMatriculadas.isEmpty()) {
-            System.out.println("O aluno não está matriculado em nenhuma disciplina.");
+            JOptionPane.showMessageDialog(null, "O aluno não está matriculado em nenhuma disciplina.");
             return;
         }
-        System.out.println("Disciplinas em que o aluno está matriculado:");
+        JOptionPane.showMessageDialog(null, "Disciplinas em que o aluno está matriculado:");
         for (Turmas turma : turmasMatriculadas) {
-            System.out.println("- " + turma);
+            JOptionPane.showMessageDialog(null, "- " + turma);
         }
-        System.out.print("Digite o nome da disciplina que deseja trancar: ");
-        String nomeDisciplina = scanner.nextLine();
+        String nomeDisciplina = JOptionPane.showInputDialog(null, "Digite o nome da disciplina que deseja trancar: ");
         Turmas disciplina = null;
         for (Turmas t : turmasMatriculadas) {
             if (t.getNome().equalsIgnoreCase(nomeDisciplina)) {
@@ -206,17 +214,15 @@ public class ModoAluno {
             }
         }
         if (disciplina == null) {
-            System.out.println("O aluno não está matriculado nesta disciplina.");
+            JOptionPane.showConfirmDialog(null, "O aluno não está matriculado nesta disciplina.");
             return;
         }
         alunoEncontrado.trancarDisciplina(disciplina);
-        System.out.println("Disciplina " + disciplina.getNome() + " trancada com sucesso para o aluno " + alunoEncontrado.getNome() + "!");
+        JOptionPane.showMessageDialog(null, "Disciplina " + disciplina.getNome() + " trancada com sucesso para o aluno " + alunoEncontrado.getNome() + "!");
     }
 
     public void trancarSemestreAluno() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite a matrícula do aluno que deseja trancar o semestre: ");
-        String matricula = scanner.nextLine();
+        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja trancar o semestre: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
             if (aluno.getMatricula().equals(matricula)) {
@@ -225,11 +231,11 @@ public class ModoAluno {
             }
         }
         if (alunoEncontrado == null) {
-            System.out.println("Aluno não encontrado.");
+            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
-        alunoEncontrado.trancarSemestre(alunoEncontrado.getMatricula());
-        System.out.println("Semestre trancado com sucesso para o aluno " + alunoEncontrado.getNome() + "!");
+        alunoEncontrado.trancarSemestre(alunoEncontrado.getMatricula());       
+        JOptionPane.showMessageDialog(null,"Semestre trancado com sucesso para o aluno " + alunoEncontrado.getNome() + "!" );
     }
 
 

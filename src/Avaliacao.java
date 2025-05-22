@@ -18,6 +18,14 @@ public class Avaliacao {
         this.totalAulas = totalAulas;
         this.presenca = presenca;
     }
+    public String getTipo() {return tipo;}
+    public double getProva1() {return prova1;}
+    public double getProva2() {return prova2;}
+    public double getProva3() {return prova3;}
+    public double getListasExercicios() {return listasExercicios;}
+    public double getTrabalhos() {return trabalhos;}
+    public int getTotalAulas() {return totalAulas;}
+    public int getPresenca() {return presenca;}
     
     public double calcularMediaFinal() {         
         if (tipo.equals("A")) {

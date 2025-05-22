@@ -16,7 +16,7 @@ public class Turmas extends Disciplina {
     private List<Aluno> alunosMatriculados;
     private boolean presencial;
 
-    public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, String tipoAvaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos) {
+    public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, String tipoAvaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos, Integer totalAulas) {
         super(disciplina.getNome(), disciplina.getCodigo(), disciplina.getCargaHoraria(), disciplina.getPreRequisitos()); 
         this.professor = professor;
         this.semestre = semestre;
@@ -26,6 +26,7 @@ public class Turmas extends Disciplina {
         this.sala = sala;
         this.turmaHorario = turmaHorario;
         this.maxAlunos = maxAlunos;
+        this.totalAulas = totalAulas;
         this.alunosMatriculados = new ArrayList<>();
     }
 

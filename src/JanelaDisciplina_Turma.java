@@ -4,20 +4,23 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class JanelaDisciplina_Turma extends JFrame {   
-    ModoDisciplina_Turma modoDT = new ModoDisciplina_Turma();
+    ModoDisciplina_Turma modoDT;
  
     public JanelaDisciplina_Turma() {
         super("Modo Disicplina/Turma");
-        setSize(600,400);
+        modoDT = new ModoDisciplina_Turma();
+        setSize(1000,500);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel (new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         
-        JPanel botao_painel = new JPanel(new GridLayout(5,1,5,5));
+        JPanel botao_painel = new JPanel(new GridLayout(6,1,5,5));
+
         JButton botaoCadastrarDisciplina = new JButton("Cadastrar Disciplina");
         JButton botaoListarDisciplinas = new JButton("Listar Disciplinas cadastradas");
         JButton botaoCriarTurmas = new JButton("Criar turma");
@@ -37,10 +40,15 @@ public class JanelaDisciplina_Turma extends JFrame {
         botao_painel.add(botaoListarTurmas);
         botao_painel.add(botaoVoltar);
 
-        String[] columnNames = {"Código, Nome, Professor, Horário, Vagas"};
+        panel.add(botao_painel, BorderLayout.WEST);
+
+        String[] columnNames = {"Código", "Nome", "Professor", "Horário", "Vagas"};
         Object[][] data = {};
 
         JTable table = new JTable(data, columnNames);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
 
         add(panel);
     }

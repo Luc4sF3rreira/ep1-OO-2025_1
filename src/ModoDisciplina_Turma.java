@@ -1,54 +1,49 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class ModoDisciplina_Turma {
-    Scanner scanner = new Scanner(System.in);
     List<Disciplina> disciplinas = new ArrayList<>();
     List<String> preRequisitos = new ArrayList<>();
     boolean resposta = true;
 
     public void cadastrarDisciplinas() {
         while (resposta) {
-            System.out.print("Digite o nome da disciplina (Sem abreviações): ");
-            String nome = scanner.nextLine();
+            String nome = JOptionPane.showInputDialog(null, "Digite o nome da disciplina (sem abreviações): ");
 
-            System.out.print("Digite o código da disciplina: ");
-            String codigo = scanner.nextLine();
+            String codigo = JOptionPane.showInputDialog(null, "Digite o código da disciplina: ");
             boolean codigoExiste;
             do {
                 codigoExiste = false;
                 for (Disciplina disciplina : disciplinas) {
                     if (disciplina.getCodigo().equals(codigo)) {
                         codigoExiste = true;
-                        System.out.println("Código já cadastrado. Digite um código diferente.");
-                        System.out.print("Digite outro código: ");
-                        codigo = scanner.nextLine();
+                        codigo = JOptionPane.showInputDialog(null, "Código já cadastrado. Digite um código diferente: ");
                         break;
                     }
                 }
             } while (codigoExiste);
 
-            System.out.print("Digite a carga horária da disciplina: ");
-            int cargaHoraria = scanner.nextInt();
-            scanner.nextLine(); 
-            
-            System.out.print("Digite os pré-requisitos da disciplina (separados por vírgula): ");
-            String preRequisitosInput = scanner.nextLine();
+            int cargaHoraria = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite a carga horária da disciplina: "));
+            if (cargaHoraria <= 0) {
+                JOptionPane.showMessageDialog(null, "Carga horária inválida. Digite um valor maior que zero.");
+                continue;
+            }
+
+            String preRequisitosInput = JOptionPane.showInputDialog(null, "Digite os pré-requisitos da disciplina (sem abreviação e separados por vírgula): ");
             preRequisitos.add(preRequisitosInput);
 
             Disciplina novaDisciplina = new Disciplina(nome, codigo, cargaHoraria, preRequisitos);
             disciplinas.add(novaDisciplina);
 
-            System.out.println("-------------------------------------------------");
-            System.out.println("Disciplina cadastrada com sucesso!");
-            System.out.println("Nome: " + novaDisciplina.getNome());
-            System.out.println("Código: " + novaDisciplina.getCodigo());
-            System.out.println("Carga Horária: " + novaDisciplina.getCargaHoraria());
-            System.out.println("Pré-requisitos: " + preRequisitosInput);
-            System.out.println("-------------------------------------------------");
-            System.out.print("Deseja cadastrar mais disciplinas? (S/N): ");
-            String respostaInput = scanner.nextLine();
+            StringBuilder dadosDisciplina = new StringBuilder();
+            dadosDisciplina.append("Nome: ").append(novaDisciplina.getNome()).append("\n");
+            dadosDisciplina.append("Código: ").append(novaDisciplina.getCodigo()).append("\n");
+            dadosDisciplina.append("Carga Horária: ").append(novaDisciplina.getCargaHoraria()).append("\n");
+            dadosDisciplina.append("Pré-requisitos: ").append(preRequisitosInput).append("\n");
+            JOptionPane.showMessageDialog(null, dadosDisciplina.toString());
+
+            String respostaInput = JOptionPane.showInputDialog(null, "Deseja cadastrar mais disciplinas? (S/N): ");
             if (respostaInput.equalsIgnoreCase("N")) {
                 resposta = false;
             } else if (respostaInput.equalsIgnoreCase("S")) {
@@ -62,92 +57,78 @@ public class ModoDisciplina_Turma {
     public List<Disciplina> getDisciplinas() {return disciplinas;}
 
     public void listarDisciplinas(List<Disciplina> disciplinas) {
-        System.out.println("-------------------------------------------------");
-        System.out.println("Disciplinas cadastradas:");
-        for (Disciplina disciplina : disciplinas) {
-            System.out.println("Nome: " + disciplina.getNome());
-            System.out.println("Código: " + disciplina.getCodigo());
-            System.out.println("Carga Horária: " + disciplina.getCargaHoraria());
-            System.out.println("Pré-requisitos: " + disciplina.getPreRequisitos());
-            System.out.println("-------------------------------------------------");
+        if (disciplinas == null || disciplinas.isEmpty()) {
+            System.out.println("Nenhuma disciplina cadastrada.");
+            return;
         }
-    }
+        StringBuilder listaDisciplinas = new StringBuilder();
+        listaDisciplinas.append("Disciplinas cadastradas:\n");
+        for (Disciplina disciplina : disciplinas) {
+            listaDisciplinas.append("   Nome: ").append(disciplina.getNome()).append("\n");
+            listaDisciplinas.append("   Código: ").append(disciplina.getCodigo()).append("\n");
+            listaDisciplinas.append("   Carga Horária: ").append(disciplina.getCargaHoraria()).append("\n");
+            listaDisciplinas.append("   Pré-requisitos: ").append(disciplina.getPreRequisitos()).append("\n");
+        }
+        JOptionPane.showMessageDialog(null, listaDisciplinas.toString());        
+    }    
 
     public void cadastrarTurmas() {
         if (disciplinas.isEmpty()) {
             System.out.println("Nenhuma disciplina cadastrada. Cadastre uma disciplina antes de criar uma turma.");
             return;
         }
-
-        System.out.println("Selecione a disciplina para a qual deseja cadastrar uma turma:");
+        JOptionPane.showMessageDialog(null,"Selecione a disciplina para a qual deseja cadastrar uma turma:");
         for (int i = 0; i < disciplinas.size(); i++) {
             Disciplina disciplina = disciplinas.get(i);
-            System.out.println((i + 1) + ". " + disciplina.getNome() + " (" + disciplina.getCodigo() + ")");
+            JOptionPane.showMessageDialog(null, (i + 1) + ". " + disciplina.getNome() + " (" + disciplina.getCodigo() + ")");
         }
-
-        int opcaoDisciplina = -1;
+        Integer opcaoDisciplina = -1;
         while (opcaoDisciplina < 1 || opcaoDisciplina > disciplinas.size()) {
-            System.out.print("Digite o número da disciplina: ");
-            if (scanner.hasNextInt()) {
-                opcaoDisciplina = scanner.nextInt();
-                scanner.nextLine();
+            try {
+                opcaoDisciplina = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número da disciplina:"));
                 if (opcaoDisciplina < 1 || opcaoDisciplina > disciplinas.size()) {
-                    System.out.println("Opção inválida. Tente novamente.");
+                    JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
                 }
-            } else {
-                System.out.println("Entrada inválida. Digite um número.");
-                scanner.nextLine(); 
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Entrada inválida. Digite um número.");
             }
-
+        }
+        Disciplina disciplina = disciplinas.get(opcaoDisciplina - 1);
         List<Turmas> turmas = new ArrayList<>();
-        List<Turmas> salas = new ArrayList<>();                   
+        List<Turmas> salas = new ArrayList<>();
 
-        System.out.print("Digite o professor da turma: ");
-        String professor = scanner.nextLine();
 
-        System.out.print("Digite o semestre da turma: ");
-        String semestre = scanner.nextLine();
+        String professor = JOptionPane.showInputDialog(null, "Digite o nome do professor da turma:");
 
-        System.out.print("Digite o número da turma: ");
-        int numeroTurma = scanner.nextInt();        
+        String semestre = JOptionPane.showInputDialog(null, "Digite o semestre da turma:");
 
-        System.out.print("Digite a forma de avaliação (A ou B): ");
-        String formaAvaliacao = scanner.nextLine();
+        Integer numeroTurma = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número da turma: "));
+
+        String formaAvaliacao = JOptionPane.showInputDialog(null, "Digite a forma de avaliação (A ou B): ");
+            while (!formaAvaliacao.equalsIgnoreCase("A") && !formaAvaliacao.equalsIgnoreCase("B")) {
+                formaAvaliacao = JOptionPane.showInputDialog(null, "Forma de Avaliação inválida. Digite 'A' ou 'B': ");
+            }
             if(formaAvaliacao.equalsIgnoreCase("A")) {
                 System.out.println("Forma de Avaliação A selecionada.");
             } else if (formaAvaliacao.equalsIgnoreCase("B")) {
                 System.out.println("Forma de Avaliação B selecionada.");
-            } else {
-                System.out.println("Forma de Avaliação inválida. Digite 'A' ou 'B': ");
-                formaAvaliacao = scanner.nextLine();
             }
 
-        System.out.print("Digite a modalidade (presencial ou online): ");
-        String modalidade = scanner.nextLine();
+        String modalidade = JOptionPane.showInputDialog(null, "Digite a modalidade (presencial ou online): ");
             while (!modalidade.equalsIgnoreCase("presencial") && !modalidade.equalsIgnoreCase("online")) {
-                System.out.println("Modalidade inválida. Digite 'presencial' ou 'online': ");
-                modalidade = scanner.nextLine();
+                modalidade = JOptionPane.showInputDialog(null, "Modalidade inválida. Digite 'presencial' ou 'online': ");
         }
 
-        System.out.print("Digite a sala da turma (I1 - I10 ou S1 - S10): ");
-            if (modalidade.equalsIgnoreCase("presencial")) {
-                System.out.println("Digite o número da sala: ");
-                while (true) {
-                    String sala = scanner.nextLine();
-                    if (sala.matches("I[1-9]|I10|S[1-9]|S10")) {
-                        break;
-                    } else {
-                        System.out.println("Sala inválida. Digite uma sala válida (I1 - I10 ou S1 - S10): ");
-                    }
-                }
-                String sala = scanner.nextLine();
-            } else {
-                System.out.println("Turma online não requer sala.");
-                String sala = "";
-            }        
-        
-        System.out.print("Digite o horário da turma: ");
-        String horario = scanner.nextLine();
+        if (modalidade.equalsIgnoreCase("presencial")) {
+            String sala = JOptionPane.showInputDialog(null, "Digite a sala da turma (I1 - I10 ou S1 - S10): ");
+            while (!sala.matches("I[1-9]|I10|S[1-9]|S10")) {
+                sala = JOptionPane.showInputDialog(null, "Sala inválida. Digite uma sala válida (I1 - I10 ou S1 - S10): ");
+            }
+        } else {
+            System.out.println("Turma online não requer sala.");
+        }
+  
+        String horario = JOptionPane.showInputDialog(null, "Digite o horário da turma (HH:MM): ");
         boolean horarioUnico;
         String sala = "";
         do {
@@ -159,20 +140,31 @@ public class ModoDisciplina_Turma {
                 turma.getSala().equalsIgnoreCase(sala) &&
                 turma.getHorario().equalsIgnoreCase(horario)) {
                 horarioUnico = false;
-                System.out.println("Horário já cadastrado para essa sala. Digite um horário diferente:");
-                horario = scanner.nextLine();
+                horario = JOptionPane.showInputDialog(null, "Horário já cadastrado para essa sala. Digite um horário diferente:");
                 break;
             }
             }
         } while (!horarioUnico);
 
-        System.out.print("Digite o número máximo de alunos na turma: ");
-        int maxAlunos = scanner.nextInt();
+        Integer maxAlunos = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número máximo de alunos na turma: "));
+        while (maxAlunos <= 0) {
+            maxAlunos = Integer.parseInt(JOptionPane.showInputDialog(null, "Número máximo de alunos inválido. Digite um valor maior que zero: "));
         }
-        
-        System.out.print("Digite o número total de aulas que serão dadas: ");
 
-    }
+        Integer totalAulas = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número total de aulas que serão dadas: "));
+        while (totalAulas <= 0) {
+            totalAulas = Integer.parseInt(JOptionPane.showInputDialog(null, "Número total de aulas inválido. Digite um valor maior que zero: "));
+        }
+        Turmas novaTurma = new Turmas(disciplina, professor, semestre, numeroTurma, formaAvaliacao, modalidade, sala, horario, maxAlunos, totalAulas);
+        turmas.add(novaTurma);
+    }        
+
+
+
+
+
+
+
 
     public void salvarDados(String caminhoArquivo) {
         try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream(caminhoArquivo))) {

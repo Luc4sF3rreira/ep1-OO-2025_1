@@ -8,11 +8,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class JanelaAvaliacao_Frequencia extends JFrame{
-    ModoAvaliacao_Frequencia modoAF = new ModoAvaliacao_Frequencia();
+    ModoAvaliacao_Frequencia modoAF;
 
     public JanelaAvaliacao_Frequencia() {
         super("Modo Avaliação/Frequência");
-        setSize(700,500);
+        modoAF = new ModoAvaliacao_Frequencia();
+        setSize(1050,500);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -32,6 +33,8 @@ public class JanelaAvaliacao_Frequencia extends JFrame{
         botaoRelatorioDisciplina.addActionListener(e -> relatorioDisciplinas());
         botaoRelatorioProfessor.addActionListener(e -> relatorioProfessores());
         botaoExibirBoletimAluno.addActionListener(e -> boletinsAlunos());
+        botaoVoltar.addActionListener(e -> dispose());
+
 
         botao_painel.add(botaoLancarNotas);
         botao_painel.add(botaoMediaFinal);
@@ -48,6 +51,8 @@ public class JanelaAvaliacao_Frequencia extends JFrame{
 
         JTable table = new JTable(data, columnNames);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
 
         add(panel);
     }

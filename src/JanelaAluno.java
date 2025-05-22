@@ -1,12 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class JanelaAluno extends JFrame {
+public class JanelaAluno extends JFrame {    
     private ModoAluno modoAluno;
     
     public JanelaAluno() {
         super("Modo Aluno");
-        setSize(600,400);
+        modoAluno = new ModoAluno();
+        setSize(1000,400);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new BorderLayout());
