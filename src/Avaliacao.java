@@ -1,4 +1,3 @@
-
 public class Avaliacao {
     private String tipo;
     private double prova1;

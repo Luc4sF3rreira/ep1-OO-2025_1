@@ -173,5 +173,24 @@ public class ModoDisciplina_Turma {
         System.out.print("Digite o número total de aulas que serão dadas: ");
 
     }
+
+    public void salvarDados(String caminhoArquivo) {
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream(caminhoArquivo))) {
+            oos.writeObject(disciplinas);
+            System.out.println("Dados salvos com sucesso em " + caminhoArquivo);
+        } catch (Exception e) {
+            System.out.println("Erro ao salvar dados: " + e.getMessage());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void carregarDados(String caminhoArquivo) {
+        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream(caminhoArquivo))) {
+            disciplinas = (List<Disciplina>) ois.readObject();
+            System.out.println("Dados carregados com sucesso de " + caminhoArquivo);
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar dados: " + e.getMessage());
+        }
+    }
 }           
       

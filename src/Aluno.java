@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Scanner;
 
 public class Aluno {
     private String nome;
@@ -11,7 +11,7 @@ public class Aluno {
     private List<String> disciplinasFeitas;
     private Avaliacao avaliacao;
 
-    public Aluno(String nome, String matricula, String curso, String tipoAluno, String disciplinasFeitas) {
+    public Aluno(String nome, String matricula, String curso, String tipoAluno, List<String> disciplinasFeitas) {
         this.nome = nome;
         this.matricula = matricula;
         this.curso = curso;
@@ -35,7 +35,33 @@ public class Aluno {
    public void setAvaliacao(Avaliacao avaliacao) {this.avaliacao = avaliacao;}
    
     //Métodos
-    public void matricularTurma (Aluno aluno, Aluno matricula, Turmas turma) {
+    public void matricularTurma (String nomeTurma) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do aluno que deseja matricular: ");
+        String nomeAluno = scanner.nextLine();
+
+        if (!this.nome.equalsIgnoreCase(nomeAluno)) {
+            System.out.println("Aluno não encontrado.");
+            return;
+        }
+
+        System.out.println("Turmas disponíveis para matrícula:");
+        for (int i = 0; i < turmasMatriculadas.size(); i++) {
+            Turmas t = turmasMatriculadas.get(i);
+            System.out.println((i + 1) + ". " + t.getNome() + " (" + t.getSemestre() + ")");
+        }
+
+        System.out.print("Digite a turma que deseja se matricular: ");
+        int escolha = scanner.nextInt();
+        scanner.nextLine();
+
+        if (escolha < 1 || escolha > turmasMatriculadas.size()) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+
+        Turmas turma = turmasMatriculadas.get(escolha - 1);
+        Aluno aluno = this;
         System.out.println("Turmas disponíveis para matrícula:");
         for (Turmas t : aluno.getTurmasMatriculadas()) {
             System.out.println("- " + t.getNome() + " (" + t.getSemestre() + ")");
@@ -51,13 +77,7 @@ public class Aluno {
                     System.out.println("Aluno" + aluno.getNome() + "não pode se matricular na turma" + turma.getNome() + "porque não tem os pré-requisitos: " + preRequisito);
                     return;
                     }          
-    
-            if (aluno instanceof AlunoEspecial) {
-                if (aluno.getTurmasMatriculadas().size() >= 2) {
-                    System.out.println("Aluno especial só pode se matricular em até 2 disciplinas.");
-                    return;
-                }
-            }
+
             System.out.println("Aluno " + aluno.getNome() + " matriculado com sucesso na turma " + turma.getNome() + ".");
         } else {
             System.out.println("Não há vagas disponíveis na turma " + turma.getNome() + ".");
