@@ -47,7 +47,7 @@ public class ModoAluno {
                 tipoAluno = scanner.nextLine();
             }
 
-            System.out.print("Digite as disciplinas já feitas (separadas por vírgula): ");
+            System.out.print("Digite as disciplinas já feitas (Sem abreviações e separadas por vírgula): ");
             String disciplinasFeitas = scanner.nextLine();
 
             List<String> listaDisciplinasFeitas = new ArrayList<>();

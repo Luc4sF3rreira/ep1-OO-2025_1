@@ -10,7 +10,7 @@ public class ModoDisciplina_Turma {
 
     public void cadastrarDisciplinas() {
         while (resposta) {
-            System.out.print("Digite o nome da disciplina: ");
+            System.out.print("Digite o nome da disciplina (Sem abreviações): ");
             String nome = scanner.nextLine();
 
             System.out.print("Digite o código da disciplina: ");
