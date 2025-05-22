@@ -1,14 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class JanelaAluno extends JFrame {
     private ModoAluno modoAluno;
     
     public JanelaAluno() {
         super("Modo Aluno");
-        ModoAluno modoAluno = new ModoAluno();
-        Aluno aluno = new Aluno("Nome", "Matricula", "Curso", "Tipo de Aluno", new ArrayList<>());
         setSize(600,400);
         setLocationRelativeTo(null);
 
