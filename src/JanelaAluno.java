@@ -7,7 +7,7 @@ public class JanelaAluno extends JFrame {
     public JanelaAluno() {
         super("Modo Aluno");
         modoAluno = new ModoAluno();
-        setSize(1000,400);
+        setSize(450,600);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -15,13 +15,26 @@ public class JanelaAluno extends JFrame {
 
         JPanel botaoPainel = new JPanel(new GridLayout(7,1,5,5));
 
-        JButton botaoCadastrarAlunos = new JButton("Cadastrar Aluno");
+        JButton botaoCadastrarAlunos = new JButton("Cadastrar alunos");
+        botaoCadastrarAlunos.setFont(botaoCadastrarAlunos.getFont().deriveFont(14.0f));
+
         JButton botaoEditarCadastro = new JButton ("Editar cadastro");
-        JButton botaoListarAluno = new JButton("Listar Alunos");
+        botaoEditarCadastro.setFont(botaoEditarCadastro.getFont().deriveFont(14.0f));
+
+        JButton botaoListarAluno = new JButton("Listar alunos");
+        botaoListarAluno.setFont(botaoListarAluno.getFont().deriveFont(14.0f));
+
         JButton botaoMatricularTurma = new JButton("Matricular em turma");
+        botaoMatricularTurma.setFont(botaoMatricularTurma.getFont().deriveFont(14.0f));
+
         JButton botaoTrancarDisciplina = new JButton("Trancar disciplina");
+        botaoTrancarDisciplina.setFont(botaoTrancarDisciplina.getFont().deriveFont(14.0f));
+
         JButton botaoTrancarSemestre = new JButton("Trancar semestre");
+        botaoTrancarSemestre.setFont(botaoTrancarSemestre.getFont().deriveFont(14.0f));
+
         JButton botaoVoltar = new JButton("Voltar ao menu principal");
+        botaoVoltar.setFont(botaoVoltar.getFont().deriveFont(14.0f));
 
         botaoCadastrarAlunos.addActionListener(e -> cadastroAlunos());
         botaoEditarCadastro.addActionListener(e -> editarCadastro());
@@ -39,12 +52,7 @@ public class JanelaAluno extends JFrame {
         botaoPainel.add(botaoTrancarSemestre);
         botaoPainel.add(botaoVoltar);
 
-        panel.add(botaoPainel, BorderLayout.WEST);
-
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-
+        panel.add(botaoPainel, BorderLayout.CENTER);
         add(panel);
     }
 
