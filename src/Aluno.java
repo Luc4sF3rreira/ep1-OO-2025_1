@@ -34,68 +34,68 @@ public class Aluno {
     public void setDisciplinasFeitas(List<String> disciplinasFeitas) {this.disciplinasFeitas = disciplinasFeitas; }
     public void setAvaliacao(Avaliacao avaliacao) {this.avaliacao = avaliacao;}   
 
-    public void matricularTurma(String nomeTurma) {
+    public void matricularTurma(Turmas turmaObj) {
         String nomeAluno = JOptionPane.showInputDialog(null, "Digite o nome do aluno que deseja matricular:");
         if (!this.nome.equalsIgnoreCase(nomeAluno)) {
             JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
-        StringBuilder turmasDisponiveis = new StringBuilder();
-        for (int i = 0; i < turmasMatriculadas.size(); i++) {
-            Turmas t = turmasMatriculadas.get(i);
-            turmasDisponiveis.append((i + 1) + ". " + t.getNome() + " (" + t.getSemestre() + ")\n");
+        List<Turmas> turmasDisponiveis = new ArrayList<>();
+        for (Turmas t : Turmas.getTodasTurmas()) { // Supondo que exista um método estático para obter todas as turmas
+            if (!turmasMatriculadas.contains(t) && t.getVagasDisponiveis() > 0) {
+            turmasDisponiveis.add(t);
+            }
         }
-        JOptionPane.showMessageDialog(null, "Turmas disponíveis para matrícula:\n" + turmasDisponiveis.toString());
-
-        String escolha = JOptionPane.showInputDialog(null, "Digite a turma que deseja se matricular:");
+        if (turmasDisponiveis.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há turmas disponíveis para matrícula.");
+            return;
+        }
+        String[] nomesTurmas = new String[turmasDisponiveis.size()];
+        for (int i = 0; i < turmasDisponiveis.size(); i++) {
+            Turmas t = turmasDisponiveis.get(i);
+            nomesTurmas[i] = t.getNome() + " (" + t.getSemestre() + ")";
+        }
+        String escolha = (String) JOptionPane.showInputDialog(
+            null,
+            "Selecione a turma para matrícula:",
+            "Turmas Disponíveis",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            nomesTurmas,
+            nomesTurmas[0]);
+        if (escolha == null) {
+            JOptionPane.showMessageDialog(null, "Matrícula cancelada.");
+            return;
+        }
         Turmas turmaEscolhida = null;
-        for (Turmas t : turmasMatriculadas) {
-            if (t.getNome().equalsIgnoreCase(escolha)) {
-                turmaEscolhida = t;
-                break;
+        for (Turmas t : turmasDisponiveis) {
+            if ((t.getNome() + " (" + t.getSemestre() + ")").equals(escolha)) {
+            turmaEscolhida = t;
+            break;
             }
         }
         if (turmaEscolhida == null) {
             JOptionPane.showMessageDialog(null, "Turma não encontrada.");
             return;
         }
-        if (turmasMatriculadas.contains(turmaEscolhida)) {
-            JOptionPane.showMessageDialog(null, "Aluno já está matriculado na turma " + turmaEscolhida.getNome() + ".");
-            return;
-        }
-        if (turmaEscolhida.getVagasDisponiveis() <= 0) {
-            JOptionPane.showMessageDialog(null, "Não há vagas disponíveis na turma " + turmaEscolhida.getNome() + ".");
-            return;
-        }
-        Aluno aluno = this;
-        System.out.println("Turmas disponíveis para matrícula:");
-        for (Turmas t : aluno.getTurmasMatriculadas()) {
-            System.out.println("- " + t.getNome() + " (" + t.getSemestre() + ")");
-        }
         boolean possuiTodosPreRequisitos = true;
         for (String preRequisito : turmaEscolhida.getPreRequisitos()) {
-            boolean possuiPreRequisito = aluno.getDisciplinasFeitas().stream()
-                .map(String::toLowerCase)
-                .anyMatch(disciplina -> disciplina.equals(preRequisito.toLowerCase()));
+            boolean possuiPreRequisito = this.getDisciplinasFeitas().stream()
+            .map(String::toLowerCase)
+            .anyMatch(disciplina -> disciplina.equals(preRequisito.toLowerCase()));
             if (!possuiPreRequisito) {
-                System.out.println("Aluno " + aluno.getNome() + " não pode se matricular na turma " + turmaEscolhida.getNome() + " porque não tem o pré-requisito: " + preRequisito);
-                possuiTodosPreRequisitos = false;
+            JOptionPane.showMessageDialog(null, "Aluno não pode se matricular na turma " + turmaEscolhida.getNome() + " porque não tem o pré-requisito: " + preRequisito);
+            possuiTodosPreRequisitos = false;
             }
         }
         if (!possuiTodosPreRequisitos) {
             return;
         }
-        if (turmaEscolhida.getVagasDisponiveis() > 0) {
-            turmaEscolhida.adicionarAluno(aluno);
-            aluno.turmasMatriculadas.add(turmaEscolhida);
-            turmaEscolhida.setVagasDisponiveis(turmaEscolhida.getVagasDisponiveis() - 1);
-            turmaEscolhida.setVagasOcupadas(turmaEscolhida.getVagasOcupadas() + 1);
-            JOptionPane.showMessageDialog(null, "Aluno " + aluno.getNome() + " matriculado na turma " + turmaEscolhida.getNome() + " com sucesso.");      
-        } else if (turmaEscolhida.getVagasDisponiveis() <= 0) {
-            JOptionPane.showMessageDialog(null, "Não há vagas disponíveis na turma " + turmaEscolhida.getNome() + ".");
-        } else if (turmaEscolhida.getVagasOcupadas() >= turmaEscolhida.getMaxAlunos()) {
-            JOptionPane.showMessageDialog(null, "Turma " + turmaEscolhida.getNome() + " já está cheia.");
-        }
+        turmaEscolhida.adicionarAluno(this);
+        turmasMatriculadas.add(turmaEscolhida);
+        turmaEscolhida.setVagasDisponiveis(turmaEscolhida.getVagasDisponiveis() - 1);
+        turmaEscolhida.setVagasOcupadas(turmaEscolhida.getVagasOcupadas() + 1);
+        JOptionPane.showMessageDialog(null, "Aluno " + this.getNome() + " matriculado na turma " + turmaEscolhida.getNome() + " com sucesso.");
     }
 
    public void trancarDisciplina (Turmas turma) {

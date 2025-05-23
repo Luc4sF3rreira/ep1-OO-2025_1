@@ -33,9 +33,9 @@ public class JanelaDisciplina_Turma extends JFrame {
         JButton botaoCriarTurmas = new JButton("Criar turma");
         botaoCriarTurmas.setFont(botaoCriarTurmas.getFont().deriveFont(14.0f));
 
-        JButton botaoListarTurmas = new JButton("Listar turmas disponíveis");
-        
+        JButton botaoListarTurmas = new JButton("Listar turmas cadastradas");        
         botaoListarTurmas.setFont(botaoListarTurmas.getFont().deriveFont(14.0f));
+        
         JButton botaoListarAlunosTurmas  = new JButton("Listar alunos por turmas");
         botaoListarAlunosTurmas.setFont(botaoListarAlunosTurmas.getFont().deriveFont(14.0f));
 
@@ -65,9 +65,9 @@ public class JanelaDisciplina_Turma extends JFrame {
         add(panel);
     }
     private void listarDisciplinas() {
-        modoDT.listarDisciplinas(null);
+        modoDT.listarDisciplinas();
     }
     private void listarTurmas() {
-        modoDT.listarDisciplinas(null);
+        modoDT.listarTurmas();
     }
 }

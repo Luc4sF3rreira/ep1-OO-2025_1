@@ -46,7 +46,7 @@ public class JanelaAluno extends JFrame {
         botaoEditarCadastro.addActionListener(e -> modoAluno.editarCadastroAluno());
         botaoListarAluno.addActionListener(e -> modoAluno.listarAlunos());
         botaoExcluirAluno.addActionListener(e -> modoAluno.excluirAluno());
-        botaoMatricularTurma.addActionListener(e -> modoAluno.matricularAlunoTurma());
+        botaoMatricularTurma.addActionListener(e -> matricularAlunoTurma());
         botaoTrancarDisciplina.addActionListener(e -> modoAluno.trancarDisciplinaAluno());
         botaoTrancarSemestre.addActionListener(e -> modoAluno.trancarSemestreAluno());
         botaoVoltar.addActionListener(e -> { modoAluno.salvarDadosAlunos();dispose();});
@@ -70,6 +70,10 @@ public class JanelaAluno extends JFrame {
 
         panel.add(botaoPainel, BorderLayout.CENTER);
         add(panel);
+    }
+
+    public void matricularAlunoTurma() {
+        modoAluno.matricularAlunoTurma(null);
     }
 }
 

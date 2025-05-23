@@ -75,27 +75,68 @@ public class ModoAluno {
             }
         }
     }
-    
-    public void matricularAlunoTurma() {
+
+    public void matricularAlunoTurma(List<Turmas> turmasDisponiveis) {
         if (alunos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
             return;
         }
-        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja matricular: ");
-        Aluno alunoEncontrado = null;
+        if (turmasDisponiveis == null || turmasDisponiveis.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhuma turma cadastrada.");
+            return;
+        }
+        // Seleção de aluno
+        String[] nomesAlunos = alunos.stream().map(Aluno::getNome).toArray(String[]::new);
+        String nomeSelecionado = (String) JOptionPane.showInputDialog(
+            null,
+            "Selecione o aluno para matricular:",
+            "Selecionar Aluno",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            nomesAlunos,
+            nomesAlunos[0]
+        );
+        if (nomeSelecionado == null) {
+            return; // Usuário cancelou
+        }
+        Aluno alunoSelecionado = null;
         for (Aluno aluno : alunos) {
-            if (aluno.getMatricula().equals(matricula)) {
-                alunoEncontrado = aluno;
+            if (aluno.getNome().equals(nomeSelecionado)) {
+                alunoSelecionado = aluno;
                 break;
             }
         }
-        if (alunoEncontrado == null) {
+        if (alunoSelecionado == null) {
             JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
-        String nomeTurma = JOptionPane.showInputDialog(null, "Digite o nome da turma para matrícula: ");
-        alunoEncontrado.matricularTurma(nomeTurma);
-        JOptionPane.showMessageDialog(null, "Aluno matriculado na turma " + nomeTurma + "com sucesso!");
+        // Seleção de turma
+        String[] nomesTurmas = turmasDisponiveis.stream().map(Turmas::getNome).toArray(String[]::new);
+        String turmaSelecionada = (String) JOptionPane.showInputDialog(
+            null,
+            "Selecione a turma para matrícula:",
+            "Selecionar Turma",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            nomesTurmas,
+            nomesTurmas[0]
+        );
+        if (turmaSelecionada == null) {
+            return; // Usuário cancelou
+        }
+        Turmas turmaObj = null;
+        for (Turmas t : turmasDisponiveis) {
+            if (t.getNome().equals(turmaSelecionada)) {
+                turmaObj = t;
+                break;
+            }
+        }
+        if (turmaObj == null) {
+            JOptionPane.showMessageDialog(null, "Turma não encontrada.");
+            return;
+        }
+        alunoSelecionado.matricularTurma(turmaObj);
+        JOptionPane.showMessageDialog(null, "Aluno matriculado na turma " + turmaSelecionada + " com sucesso!");
     }
 
     public void editarCadastroAluno() {
@@ -211,7 +252,6 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
             return;
         }
-        JOptionPane.showMessageDialog(null, "Lista de Alunos Cadastrados");
         for (Aluno aluno : alunos) {
             StringBuilder dadosAluno = new StringBuilder();
             dadosAluno.append("Nome: ").append(aluno.getNome()).append("\n");
@@ -288,12 +328,14 @@ public class ModoAluno {
     public void salvarDadosAlunos() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_DADOS))) {
             for (Aluno aluno : alunos) {
-                writer.println("Nome: " + aluno.getNome());
-                writer.println("Matrícula: " + aluno.getMatricula());
-                writer.println("Curso: " + aluno.getCurso());
-                writer.println("Tipo de Aluno: " + aluno.getTipoAluno());
-                writer.println("Disciplinas já feitas: " + String.join(", ", aluno.getDisciplinasFeitas()));
-                writer.println();
+                // nome;matricula;curso;tipo;disciplina1,disciplina2,...
+                writer.println(
+                    aluno.getNome() + ";" +
+                    aluno.getMatricula() + ";" +
+                    aluno.getCurso() + ";" +
+                    aluno.getTipoAluno() + ";" +
+                    String.join(",", aluno.getDisciplinasFeitas())
+                );
             }
             JOptionPane.showMessageDialog(null, "Dados dos alunos salvos com sucesso em " + ARQUIVO_DADOS);
         } catch (IOException e) {
@@ -303,13 +345,27 @@ public class ModoAluno {
 
     public void carregarDadosAlunos() {
         alunos.clear();
+        File arquivo = new File(ARQUIVO_DADOS);
+        if (!arquivo.exists() || arquivo.length() == 0) {
+            return;
+        }
         try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_DADOS))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
-                String[] dados = linha.split(";");
-                if (dados.length == 5) {
-                    alunos.add(new Aluno(dados[0], dados[1], dados[2], dados[3], List.of(dados[4].split(","))));
+                if (linha.trim().isEmpty()) continue;
+                String[] partes = linha.split(";", -1);
+                if (partes.length < 5) continue;
+                String nome = partes[0];
+                String matricula = partes[1];
+                String curso = partes[2];
+                String tipoAluno = partes[3];
+                List<String> disciplinasFeitas = new ArrayList<>();
+                if (!partes[4].isEmpty()) {
+                    for (String d : partes[4].split(",")) {
+                        disciplinasFeitas.add(d.trim());
+                    }
                 }
+                alunos.add(new Aluno(nome, matricula, curso, tipoAluno, disciplinasFeitas));
             }
             JOptionPane.showMessageDialog(null, "Dados dos alunos carregados com sucesso de " + ARQUIVO_DADOS);
         } catch (FileNotFoundException e) {

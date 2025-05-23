@@ -11,18 +11,25 @@ public class ModoDisciplina_Turma {
     private static final String ARQUIVO_TURMAS = "turmas.txt";
     private static final String ARQUIVO_DISCIPLINAS = "disciplinas.txt";
 
+    public ModoDisciplina_Turma() {
+        carregarTudo();
+    }
+
     public void cadastrarDisciplinas() {
         while (resposta) {
             String nome = JOptionPane.showInputDialog(null, "Digite o nome da disciplina (sem abreviações): ");
 
-            String codigo = JOptionPane.showInputDialog(null, "Digite o código da disciplina: ");
+            String codigo = JOptionPane.showInputDialog(null, "Digite o código da disciplina (Ex: FGAXXXX): ");
+            while (!codigo.matches("FGA\\d{4}")) {
+                codigo = JOptionPane.showInputDialog(null, "Código inválido. Digite um código no formato FGAXXXX: ");
+            }
             boolean codigoExiste;
             do {
                 codigoExiste = false;
                 for (Disciplina disciplina : disciplinas) {
                     if (disciplina.getCodigo().equals(codigo)) {
                         codigoExiste = true;
-                        codigo = JOptionPane.showInputDialog(null, "Código já cadastrado. Digite um código diferente: ");
+                        codigo = JOptionPane.showInputDialog(null, "Código já cadastrado. Digite um código diferente: ");                        
                         break;
                     }
                 }
@@ -39,14 +46,11 @@ public class ModoDisciplina_Turma {
 
             Disciplina novaDisciplina = new Disciplina(nome, codigo, cargaHoraria, preRequisitos);
             disciplinas.add(novaDisciplina);
+            salvarDisciplinas(); // Salva imediatamente após adicionar
 
             StringBuilder dadosDisciplina = new StringBuilder();
             dadosDisciplina.append("Nome: ").append(novaDisciplina.getNome()).append("\n");
             dadosDisciplina.append("Código: ").append(novaDisciplina.getCodigo()).append("\n");
-            dadosDisciplina.append("Carga Horária: ").append(novaDisciplina.getCargaHoraria()).append("\n");
-            dadosDisciplina.append("Pré-requisitos: ").append(preRequisitosInput).append("\n");
-            JOptionPane.showMessageDialog(null, dadosDisciplina.toString());
-
             String respostaInput = JOptionPane.showInputDialog(null, "Deseja cadastrar mais disciplinas? (S/N): ");
             if (respostaInput.equalsIgnoreCase("N")) {
                 resposta = false;
@@ -56,30 +60,27 @@ public class ModoDisciplina_Turma {
                 System.out.println("Opção inválida. Tente novamente."); 
             }
         }
-    }
-
-    public List<Disciplina> getDisciplinas() {return disciplinas;}
-
-    public void listarDisciplinas(List<Disciplina> disciplinas) {
-        if (disciplinas == null || disciplinas.isEmpty()) {
-            System.out.println("Nenhuma disciplina cadastrada.");
+                System.out.println("Opção inválida. Tente novamente."); 
+            }
+        
+    
+    public void listarDisciplinas() {
+        if (disciplinas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhuma disciplina cadastrada.");
             return;
         }
         StringBuilder listaDisciplinas = new StringBuilder();
-        listaDisciplinas.append("Disciplinas cadastradas:\n");
-        for (Disciplina disciplina : disciplinas) {
-            listaDisciplinas.append("   Nome: ").append(disciplina.getNome()).append("\n");
-            listaDisciplinas.append("   Código: ").append(disciplina.getCodigo()).append("\n");
-            listaDisciplinas.append("   Carga Horária: ").append(disciplina.getCargaHoraria()).append("\n");
-            listaDisciplinas.append("   Pré-requisitos: ").append(disciplina.getPreRequisitos()).append("\n");
+        for (int i = 0; i < disciplinas.size(); i++) {
+            Disciplina disciplina = disciplinas.get(i);
+            listaDisciplinas.append((i + 1)).append(". ").append(disciplina.getNome()).append(" (").append(disciplina.getCodigo()).append(")\n");
         }
-        JOptionPane.showMessageDialog(null, listaDisciplinas.toString());        
+        JOptionPane.showMessageDialog(null, listaDisciplinas.toString());      
     }
     
     public void salvarDisciplinas() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_DISCIPLINAS))) {
             for (Disciplina disciplina : disciplinas) {
-                writer.write(disciplina.getNome() + "," + disciplina.getCodigo() + "," + disciplina.getCargaHoraria() + "," + String.join(";", disciplina.getPreRequisitos()));
+                writer.write(disciplina.getNome() + ";" + disciplina.getCodigo() + ";" + disciplina.getCargaHoraria() + ";" + String.join(",", disciplina.getPreRequisitos()));
                 writer.println();
             }
         } catch (IOException e) {
@@ -91,64 +92,71 @@ public class ModoDisciplina_Turma {
         disciplinas.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_DISCIPLINAS))) {
             String linha;
-            while((linha = reader.readLine()) != null) {
+            while ((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(";");
-                if(dados.length >= 4) {
-                    Disciplina disciplina = new Disciplina(dados[0], dados[1], Integer.parseInt(dados[2]), List.of(dados[3].split(",")));
-
-                    if(dados.length > 4 && !dados[4].isEmpty()) {
-                        for (String preRequisito : dados[4].split(",")) {
-                            disciplina.adicionarPreRequisito(preRequisito);
+                if (dados.length >= 4) {
+                    List<String> preReqs = new ArrayList<>();
+                    if (!dados[3].isEmpty()) {
+                        for (String pre : dados[3].split(",")) {
+                            preReqs.add(pre.trim());
                         }
                     }
+                    Disciplina disciplina = new Disciplina(dados[0], dados[1], Integer.parseInt(dados[2]), preReqs);
                     disciplinas.add(disciplina);
                 }
             }
+        } catch (FileNotFoundException e) {
+            // Arquivo não existe ainda, não faz nada
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,"Arquivo de disciplinas não encontrado. Será criado um novo arquivo ao salvar.");
+            JOptionPane.showMessageDialog(null, "Erro ao carregar disciplinas: " + e.getMessage());
         }
     }
-
+    
     public void cadastrarTurmas() {
         if (disciplinas.isEmpty()) {
             System.out.println("Nenhuma disciplina cadastrada. Cadastre uma disciplina antes de criar uma turma.");
             return;
         }
-        JOptionPane.showMessageDialog(null,"Selecione a disciplina para a qual deseja cadastrar uma turma:");
+        String[] nomesDisciplinas = new String[disciplinas.size()];
         for (int i = 0; i < disciplinas.size(); i++) {
-            Disciplina disciplina = disciplinas.get(i);
-            JOptionPane.showMessageDialog(null, (i + 1) + ". " + disciplina.getNome() + " (" + disciplina.getCodigo() + ")");
+            nomesDisciplinas[i] = (i + 1) + ". " + disciplinas.get(i).getNome() + " (" + disciplinas.get(i).getCodigo() + ")";
         }
-        Integer opcaoDisciplina = -1;
-        while (opcaoDisciplina < 1 || opcaoDisciplina > disciplinas.size()) {
-            try {
-                opcaoDisciplina = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número da disciplina:"));
-                if (opcaoDisciplina < 1 || opcaoDisciplina > disciplinas.size()) {
-                    JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Entrada inválida. Digite um número.");
-            }
+        String escolha = (String) JOptionPane.showInputDialog(null, "Selecione a disciplina para cadastrar a turma:", "Selecionar Disciplina", JOptionPane.PLAIN_MESSAGE, null, nomesDisciplinas, nomesDisciplinas[0]);
+        if (escolha == null) {
+            JOptionPane.showMessageDialog(null, "Cadastro de turma cancelado.");
+            return;
         }
+        int opcaoDisciplina = Integer.parseInt(escolha.substring(0, escolha.indexOf('.')));      
+        if (opcaoDisciplina < 1 || opcaoDisciplina > disciplinas.size()) {
+            JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+            return;
+        }        
         Disciplina disciplina = disciplinas.get(opcaoDisciplina - 1);
-        List<Turmas> turmas = new ArrayList<>();
-        List<Turmas> salas = new ArrayList<>();
-
 
         String professor = JOptionPane.showInputDialog(null, "Digite o nome do professor da turma:");
+        while (professor.isEmpty()) {
+            professor = JOptionPane.showInputDialog(null, "Nome do professor inválido. Digite o nome do professor da turma:");
+        }
 
         String semestre = JOptionPane.showInputDialog(null, "Digite o semestre da turma:");
 
         Integer numeroTurma = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite o número da turma: "));
+        while (numeroTurma <= 0 || turmaNumeroExiste(disciplina, numeroTurma)) {
+            if (numeroTurma <= 0) {
+            numeroTurma = Integer.parseInt(JOptionPane.showInputDialog(null, "Número da turma inválido. Digite um número maior que zero: "));
+            } else {
+            numeroTurma = Integer.parseInt(JOptionPane.showInputDialog(null, "Já existe uma turma com esse número para essa disciplina. Digite outro número: "));
+            }
+        }        
 
         String formaAvaliacao = JOptionPane.showInputDialog(null, "Digite a forma de avaliação (A ou B): ");
             while (!formaAvaliacao.equalsIgnoreCase("A") && !formaAvaliacao.equalsIgnoreCase("B")) {
                 formaAvaliacao = JOptionPane.showInputDialog(null, "Forma de Avaliação inválida. Digite 'A' ou 'B': ");
             }
             if(formaAvaliacao.equalsIgnoreCase("A")) {
-                System.out.println("Forma de Avaliação A selecionada.");
             } else if (formaAvaliacao.equalsIgnoreCase("B")) {
-                System.out.println("Forma de Avaliação B selecionada.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
             }
 
         String modalidade = JOptionPane.showInputDialog(null, "Digite a modalidade (presencial ou online): ");
@@ -162,10 +170,13 @@ public class ModoDisciplina_Turma {
                 sala = JOptionPane.showInputDialog(null, "Sala inválida. Digite uma sala válida (I1 - I10 ou S1 - S10): ");
             }
         } else {
-            System.out.println("Turma online não requer sala.");
+            JOptionPane.showMessageDialog(null, "Turma online não requer sala.");
         }
   
         String horario = JOptionPane.showInputDialog(null, "Digite o horário da turma (HH:MM): ");
+        while (!horario.matches("\\d{2}:\\d{2}")) {
+            horario = JOptionPane.showInputDialog(null, "Horário inválido. Digite um horário no formato HH:MM: ");
+        }
         boolean horarioUnico;
         String sala = "";
         do {
@@ -193,13 +204,28 @@ public class ModoDisciplina_Turma {
             totalAulas = Integer.parseInt(JOptionPane.showInputDialog(null, "Número total de aulas inválido. Digite um valor maior que zero: "));
         }
         Turmas novaTurma = new Turmas(disciplina, professor, semestre, numeroTurma, formaAvaliacao, modalidade, sala, horario, maxAlunos, totalAulas);
-        turmas.add(novaTurma);
+        this.turmas.add(novaTurma);
+        salvarTurmas(); 
     }
+
+    
     
     public void salvarTurmas() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_TURMAS))) {
             for (Turmas turma : turmas) {
-                writer.write(turma.getNome() + "," + turma.getProfessor() + "," + turma.getSemestre() + "," + turma.getNumeroTurma() + "," + turma.getTipoAvaliacao() + "," + turma.getModalidade() + "," + turma.getSala() + "," + turma.getHorario() + "," + turma.getMaxAlunos() + "," + turma.getTotalAulas());
+                // Salva os dados em formato CSV, fácil de ler e carregar depois
+                writer.write(
+                    turma.getDisciplina().getCodigo() + ";" +
+                    turma.getProfessor() + ";" +
+                    turma.getSemestre() + ";" +
+                    turma.getNumeroTurma() + ";" +
+                    turma.getTipoAvaliacao() + ";" +
+                    turma.getModalidade() + ";" +
+                    (turma.getSala() == null ? "" : turma.getSala()) + ";" +
+                    turma.getHorario() + ";" +
+                    turma.getMaxAlunos() + ";" +
+                    turma.getTotalAulas()
+                );
                 writer.println();
             }
         } catch (IOException e) {
@@ -211,27 +237,41 @@ public class ModoDisciplina_Turma {
         turmas.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_TURMAS))) {
             String linha;
-            while((linha = reader.readLine()) != null) {
-                String[] dados = linha.split(",");
-                if(dados.length >= 10) {
-                    // Buscar a disciplina correspondente pelo nome (dados[0])
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";");
+                if (dados.length >= 10) {
+                    // Busca a disciplina pelo código salvo
                     Disciplina disciplinaTurma = null;
                     for (Disciplina d : disciplinas) {
-                        if (d.getNome().equals(dados[0])) {
+                        if (d.getCodigo().equals(dados[0])) {
                             disciplinaTurma = d;
                             break;
                         }
                     }
                     if (disciplinaTurma == null) {
-                        disciplinaTurma = new Disciplina(dados[0], "SEM_CODIGO", 0, new ArrayList<>());
+                        // Se não encontrar, cria uma disciplina "fantasma"
+                        disciplinaTurma = new Disciplina("Desconhecida", dados[0], 0, new ArrayList<>());
                     }
-                    Turmas turma = new Turmas(disciplinaTurma, dados[1], dados[2], Integer.parseInt(dados[3]), dados[4], dados[5], dados[6], dados[7], Integer.parseInt(dados[8]), Integer.parseInt(dados[9]));
+                    Turmas turma = new Turmas(
+                        disciplinaTurma,
+                        dados[1],
+                        dados[2],
+                        Integer.parseInt(dados[3]),
+                        dados[4],
+                        dados[5],
+                        dados[6],
+                        dados[7],
+                        Integer.parseInt(dados[8]),
+                        Integer.parseInt(dados[9])
+                    );
                     turmas.add(turma);
                 }
             }
+        } catch (FileNotFoundException e) {
+            // Arquivo não existe ainda, não faz nada
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,"Arquivo de turmas não encontrado. Será criado um novo arquivo ao salvar.");
-        } 
+            JOptionPane.showMessageDialog(null, "Erro ao carregar turmas: " + e.getMessage());
+        }
     }
     
     public void salvarTudo() {
@@ -240,7 +280,38 @@ public class ModoDisciplina_Turma {
     }
 
     public void carregarTudo() {
-        carregarDisciplinas();
-        carregarTurmas();
+        carregarDisciplinas(); // Carrega as disciplinas primeiro
+        carregarTurmas();      // Depois carrega as turmas, que dependem das disciplinas
+    }
+
+    //Método de auxílio para verificar se o número da turma já existe
+    private boolean turmaNumeroExiste(Disciplina disciplina, Integer numeroTurma) {
+        for (Turmas turma : turmas) {
+            if (turma.getDisciplina().equals(disciplina) && turma.getNumeroTurma().equals(numeroTurma)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Novo método para listar turmas cadastradas
+    public void listarTurmas() {
+        if (turmas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhuma turma cadastrada.");
+            return;
+        }
+        StringBuilder listaTurmas = new StringBuilder();
+        for (int i = 0; i < turmas.size(); i++) {
+            Turmas turma = turmas.get(i);
+            listaTurmas.append((i + 1)).append(". ")
+                .append(turma.getDisciplina().getNome()).append(" (").append(turma.getDisciplina().getCodigo()).append(") - ")
+                .append("Turma: ").append(turma.getNumeroTurma()).append(", Professor: ").append(turma.getProfessor())
+                .append(", Semestre: ").append(turma.getSemestre()).append(", Modalidade: ").append(turma.getModalidade())
+                .append(", Sala: ").append(turma.getSala()).append(", Horário: ").append(turma.getHorario())
+                .append(", Máx Alunos: ").append(turma.getMaxAlunos()).append(", Total Aulas: ").append(turma.getTotalAulas())
+                .append("\n");
+        }
+        JOptionPane.showMessageDialog(null, listaTurmas.toString());
     }
 }  
+

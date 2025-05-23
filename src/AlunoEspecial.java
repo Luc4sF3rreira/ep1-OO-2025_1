@@ -6,10 +6,9 @@ public class AlunoEspecial extends Aluno {
         super(nome, matricula, curso, tipoAluno, disciplinasFeitas);
     }
 
-    @Override
-    public void matricularTurma(String nomeTurma) {
+    public void matricularTurma(Turmas turma) {
         if (this.getTurmasMatriculadas().size() < 2) {
-            super.matricularTurma(nomeTurma);
+            super.matricularTurma(turma);
         } else {
             JOptionPane.showMessageDialog(null, "Aluno Especial só pode se matricular em até 2 turmas.");
         }        

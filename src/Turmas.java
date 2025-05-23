@@ -16,6 +16,7 @@ public class Turmas extends Disciplina {
     private Integer vagasOcupadas;
     private List<Aluno> alunosMatriculados;
     private boolean presencial;
+    private static List<Turmas> todasTurmas = new ArrayList<>();
 
     public Turmas(Disciplina disciplina, String professor, String semestre, Integer numeroTurma, String tipoAvaliação, String modalidade, String sala, String turmaHorario, Integer maxAlunos, Integer totalAulas) {
         super(disciplina.getNome(), disciplina.getCodigo(), disciplina.getCargaHoraria(), disciplina.getPreRequisitos()); 
@@ -29,6 +30,7 @@ public class Turmas extends Disciplina {
         this.maxAlunos = maxAlunos;
         this.totalAulas = totalAulas;
         this.alunosMatriculados = new ArrayList<>();
+        todasTurmas.add(this);
     }
 
     public String getProfessor() { return professor; }
@@ -42,9 +44,11 @@ public class Turmas extends Disciplina {
     public Integer getMaxAlunos() { return maxAlunos; }
     public Integer getTotalAulas() {return totalAulas;}
     public Integer getVagasOcupadas() { return vagasOcupadas; }
+    public static List<Turmas> getTodasTurmas() { return todasTurmas; }
     public void setVagasOcupadas(Integer vagasOcupadas) {this.vagasOcupadas = alunosMatriculados.size(); }
     public List<Aluno> getAlunosMatriculados() { return alunosMatriculados; }
     public Integer getVagasDisponiveis() { return maxAlunos - vagasOcupadas; }
+    public Disciplina getDisciplina() { return new Disciplina(getNome(), getCodigo(), getCargaHoraria(), getPreRequisitos()); }
     public void setVagasDisponiveis(Integer vagasDisponiveis) { this.vagasDisponiveis = vagasDisponiveis; }
 
     public void adicionarAluno(Aluno aluno) {
