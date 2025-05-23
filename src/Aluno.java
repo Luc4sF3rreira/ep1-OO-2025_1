@@ -18,7 +18,6 @@ public class Aluno {
         this.turmasMatriculadas = new ArrayList<>();
         this.disciplinasFeitas = new ArrayList<>();
     }
-
     public String getNome() {return nome; }
     public String getMatricula() {return matricula; } 
     public String getCurso() {return curso; }
@@ -32,25 +31,21 @@ public class Aluno {
     public void setTipoAluno(String tipoAluno) {this.tipoAluno = tipoAluno; }
     public void setTurmasMatriculadas(List<Turmas> turmasMatriculadas) {this.turmasMatriculadas = turmasMatriculadas; }
     public void setDisciplinasFeitas(List<String> disciplinasFeitas) {this.disciplinasFeitas = disciplinasFeitas; }
-   public void setAvaliacao(Avaliacao avaliacao) {this.avaliacao = avaliacao;}
-   
-    //Métodos
-    public void matricularTurma (String nomeTurma) {
+    public void setAvaliacao(Avaliacao avaliacao) {this.avaliacao = avaliacao;}   
+
+    public void matricularTurma(String nomeTurma) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite o nome do aluno que deseja matricular: ");
         String nomeAluno = scanner.nextLine();
-
         if (!this.nome.equalsIgnoreCase(nomeAluno)) {
             System.out.println("Aluno não encontrado.");
             return;
         }
-
         System.out.println("Turmas disponíveis para matrícula:");
         for (int i = 0; i < turmasMatriculadas.size(); i++) {
             Turmas t = turmasMatriculadas.get(i);
             System.out.println((i + 1) + ". " + t.getNome() + " (" + t.getSemestre() + ")");
         }
-
         System.out.print("Digite a turma que deseja se matricular: ");
         int escolha = scanner.nextInt();
         scanner.nextLine();
@@ -59,14 +54,12 @@ public class Aluno {
             System.out.println("Opção inválida.");
             return;
         }
-
         Turmas turma = turmasMatriculadas.get(escolha - 1);
         Aluno aluno = this;
         System.out.println("Turmas disponíveis para matrícula:");
         for (Turmas t : aluno.getTurmasMatriculadas()) {
             System.out.println("- " + t.getNome() + " (" + t.getSemestre() + ")");
-        }
-        
+        }        
         if (turma.getVagasDisponiveis() > 0) {
             turma.adicionarAluno(aluno);
             aluno.getTurmasMatriculadas().add(turma);
@@ -76,15 +69,14 @@ public class Aluno {
                     if (aluno.getDisciplinasFeitas().stream().noneMatch(disciplina -> disciplina.equals(preRequisito)))
                     System.out.println("Aluno" + aluno.getNome() + "não pode se matricular na turma" + turma.getNome() + "porque não tem os pré-requisitos: " + preRequisito);
                     return;
-                    }          
-
+                    }        
             System.out.println("Aluno " + aluno.getNome() + " matriculado com sucesso na turma " + turma.getNome() + ".");
         } else {
             System.out.println("Não há vagas disponíveis na turma " + turma.getNome() + ".");
         }
-    }      
-    
-    public void trancarDisciplina (Turmas turma) {
+    }
+
+   public void trancarDisciplina (Turmas turma) {
         if (turmasMatriculadas.contains(turma)) {
             turmasMatriculadas.remove(turma);
             System.out.println("Disciplina " + turma.getNome() + " trancada com sucesso.");
@@ -92,7 +84,7 @@ public class Aluno {
             System.out.println("Disciplina não encontrada entre as turmas matriculadas.");
         }
     }
-
+    
     public void trancarSemestre (String semestre) {
         if (turmasMatriculadas.isEmpty()) {
             turmasMatriculadas.clear();

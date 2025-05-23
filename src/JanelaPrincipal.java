@@ -37,7 +37,6 @@ public class JanelaPrincipal extends JFrame{
         panel.add(botaoModoDisciplina_Turnma);
         panel.add(botaoModoAvaliacao_Frequencia);
         panel.add(botaoSair);
-
         add(panel);
     }
 }
