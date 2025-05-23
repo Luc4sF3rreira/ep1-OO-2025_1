@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,8 +14,10 @@ public class JanelaDisciplina_Turma extends JFrame {
     public JanelaDisciplina_Turma() {
         super("Modo Disicplina/Turma");
         modoDT = new ModoDisciplina_Turma();
+        modoDT.carregarTudo();
         setSize(450,600);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel (new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -41,7 +46,7 @@ public class JanelaDisciplina_Turma extends JFrame {
         botaoListarDisciplinas.addActionListener(e -> listarDisciplinas());
         botaoCriarTurmas.addActionListener(e -> modoDT.cadastrarTurmas());
         botaoListarTurmas.addActionListener(e -> listarTurmas());
-        botaoVoltar.addActionListener(e -> {modoDT.salvarDisciplinas(); dispose(); });
+        botaoVoltar.addActionListener(e -> {modoDT.salvarTudo(); dispose(); });
         
         botao_painel.add(botaoCadastrarDisciplina);
         botao_painel.add(botaoListarDisciplinas);
@@ -49,6 +54,13 @@ public class JanelaDisciplina_Turma extends JFrame {
         botao_painel.add(botaoListarTurmas);
         botao_painel.add(botaoVoltar);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                modoDT.salvarTudo();
+                super.windowClosing(e);
+            }
+        });
         panel.add(botao_painel, BorderLayout.CENTER);
         add(panel);
     }

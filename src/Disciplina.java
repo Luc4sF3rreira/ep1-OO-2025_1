@@ -18,6 +18,13 @@ public class Disciplina {
     public Integer getCargaHoraria() {return cargaHoraria; }
     public List<String> getPreRequisitos() {return preRequisitos; }
 
+    public void adicionarPreRequisito(String codigoDisciplina) {
+        if (!preRequisitos.contains(codigoDisciplina)) {
+            preRequisitos.add(codigoDisciplina);
+        } else {
+            System.out.println("Pré-requisito já existe.");
+        }
+    }
 
 }
 

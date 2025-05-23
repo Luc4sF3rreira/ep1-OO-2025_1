@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Turmas extends Disciplina {
+    public static Object turmas;
     private String professor;
     private String semestre;
     private Integer numeroTurma;
@@ -44,6 +45,7 @@ public class Turmas extends Disciplina {
     public void setVagasOcupadas(Integer vagasOcupadas) {this.vagasOcupadas = alunosMatriculados.size(); }
     public List<Aluno> getAlunosMatriculados() { return alunosMatriculados; }
     public Integer getVagasDisponiveis() { return maxAlunos - vagasOcupadas; }
+    public void setVagasDisponiveis(Integer vagasDisponiveis) { this.vagasDisponiveis = vagasDisponiveis; }
 
     public void adicionarAluno(Aluno aluno) {
         if (vagasOcupadas < maxAlunos) {

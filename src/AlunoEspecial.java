@@ -11,13 +11,13 @@ public class AlunoEspecial extends Aluno {
         if (this.getTurmasMatriculadas().size() < 2) {
             super.matricularTurma(nomeTurma);
         } else {
-            System.out.println("AlunoEspecial só pode se matricular em até 2 turmas.");
+            JOptionPane.showMessageDialog(null, "Aluno Especial só pode se matricular em até 2 turmas.");
         }        
     }
 
     @Override
     public void setAvaliacao(Avaliacao avaliacao) {
-        JOptionPane.showMessageDialog(null, "AlunoEspecial não recebe notas, somente presença.");
+        JOptionPane.showMessageDialog(null, "Aluno Especial não recebe notas, somente presença.");
     }
 }
 

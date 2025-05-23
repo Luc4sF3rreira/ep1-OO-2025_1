@@ -1,11 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import java.io.*;
 
 public class ModoDisciplina_Turma {
     List<Disciplina> disciplinas = new ArrayList<>();
     List<String> preRequisitos = new ArrayList<>();
+    List<Turmas> turmas = new ArrayList<>();
     boolean resposta = true;
+    private static final String ARQUIVO_TURMAS = "turmas.txt";
+    private static final String ARQUIVO_DISCIPLINAS = "disciplinas.txt";
 
     public void cadastrarDisciplinas() {
         while (resposta) {
@@ -70,7 +74,40 @@ public class ModoDisciplina_Turma {
             listaDisciplinas.append("   Pré-requisitos: ").append(disciplina.getPreRequisitos()).append("\n");
         }
         JOptionPane.showMessageDialog(null, listaDisciplinas.toString());        
-    }    
+    }
+    
+    public void salvarDisciplinas() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_DISCIPLINAS))) {
+            for (Disciplina disciplina : disciplinas) {
+                writer.write(disciplina.getNome() + "," + disciplina.getCodigo() + "," + disciplina.getCargaHoraria() + "," + String.join(";", disciplina.getPreRequisitos()));
+                writer.println();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar disciplinas: " + e.getMessage());
+        }
+    }
+
+    public void carregarDisciplinas() {
+        disciplinas.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_DISCIPLINAS))) {
+            String linha;
+            while((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";");
+                if(dados.length >= 4) {
+                    Disciplina disciplina = new Disciplina(dados[0], dados[1], Integer.parseInt(dados[2]), List.of(dados[3].split(",")));
+
+                    if(dados.length > 4 && !dados[4].isEmpty()) {
+                        for (String preRequisito : dados[4].split(",")) {
+                            disciplina.adicionarPreRequisito(preRequisito);
+                        }
+                    }
+                    disciplinas.add(disciplina);
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,"Arquivo de disciplinas não encontrado. Será criado um novo arquivo ao salvar.");
+        }
+    }
 
     public void cadastrarTurmas() {
         if (disciplinas.isEmpty()) {
@@ -157,26 +194,53 @@ public class ModoDisciplina_Turma {
         }
         Turmas novaTurma = new Turmas(disciplina, professor, semestre, numeroTurma, formaAvaliacao, modalidade, sala, horario, maxAlunos, totalAulas);
         turmas.add(novaTurma);
-    }    
+    }
     
-    public void salvarDisciplinas() {
-        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream("disciplinas_turmas.txt"))) {
-            oos.writeObject(disciplinas);
-            JOptionPane.showMessageDialog(null, "Disciplinas salvas com sucesso!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar disciplinas: " + e.getMessage());
+    public void salvarTurmas() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_TURMAS))) {
+            for (Turmas turma : turmas) {
+                writer.write(turma.getNome() + "," + turma.getProfessor() + "," + turma.getSemestre() + "," + turma.getNumeroTurma() + "," + turma.getTipoAvaliacao() + "," + turma.getModalidade() + "," + turma.getSala() + "," + turma.getHorario() + "," + turma.getMaxAlunos() + "," + turma.getTotalAulas());
+                writer.println();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar turmas: " + e.getMessage());
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void carregarDisciplinas() {
-        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream("disciplinas_turmas.txt"))) {
-            disciplinas = (List<Disciplina>) ois.readObject();
-            JOptionPane.showMessageDialog(null, "Disciplinas carregadas com sucesso!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao carregar disciplinas: " + e.getMessage());
-        }
+    public void carregarTurmas() {
+        turmas.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_TURMAS))) {
+            String linha;
+            while((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                if(dados.length >= 10) {
+                    // Buscar a disciplina correspondente pelo nome (dados[0])
+                    Disciplina disciplinaTurma = null;
+                    for (Disciplina d : disciplinas) {
+                        if (d.getNome().equals(dados[0])) {
+                            disciplinaTurma = d;
+                            break;
+                        }
+                    }
+                    if (disciplinaTurma == null) {
+                        disciplinaTurma = new Disciplina(dados[0], "SEM_CODIGO", 0, new ArrayList<>());
+                    }
+                    Turmas turma = new Turmas(disciplinaTurma, dados[1], dados[2], Integer.parseInt(dados[3]), dados[4], dados[5], dados[6], dados[7], Integer.parseInt(dados[8]), Integer.parseInt(dados[9]));
+                    turmas.add(turma);
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,"Arquivo de turmas não encontrado. Será criado um novo arquivo ao salvar.");
+        } 
+    }
+    
+    public void salvarTudo() {
+        salvarDisciplinas();
+        salvarTurmas();
     }
 
-}           
-      
+    public void carregarTudo() {
+        carregarDisciplinas();
+        carregarTurmas();
+    }
+}  

@@ -1,12 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import java.io.*;
 
 public class ModoAluno {
         List<Aluno> alunos = new ArrayList<>();
         List<Aluno> matriculas = new ArrayList<>();
         List<Aluno> disciplinas_feitas = new ArrayList<>();
-        boolean respostas = true;     
+        boolean respostas = true;   
+        private static final String ARQUIVO_DADOS = "DadosAlunos.txt";  
     
     public void cadastrarAlunos() {    
         while (respostas) {
@@ -75,6 +77,10 @@ public class ModoAluno {
     }
     
     public void matricularAlunoTurma() {
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
         String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja matricular: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
@@ -93,6 +99,10 @@ public class ModoAluno {
     }
 
     public void editarCadastroAluno() {
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
         String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja editar: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
@@ -173,8 +183,29 @@ public class ModoAluno {
         dadosEditados.append("Tipo: ").append(alunoEncontrado.getTipoAluno()).append("\n");
         dadosEditados.append("Disciplinas já feitas: ").append(alunoEncontrado.getDisciplinasFeitas());
         JOptionPane.showMessageDialog(null, dadosEditados.toString());
-    }        
-    
+    }
+
+    public void excluirAluno() {
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
+        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja excluir: ");
+        Aluno alunoEncontrado = null;
+        for (Aluno aluno : alunos) {
+            if (aluno.getMatricula().equals(matricula)) {
+                alunoEncontrado = aluno;
+                break;
+            }
+        }
+        if (alunoEncontrado == null) {
+            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+            return;
+        }
+        alunos.remove(alunoEncontrado);
+        JOptionPane.showMessageDialog(null, "O aluno: " + alunoEncontrado.getNome() + " foi excluído com sucesso!");
+    }
+
     public void listarAlunos() {
         if (alunos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
@@ -193,6 +224,10 @@ public class ModoAluno {
     }
 
     public void trancarDisciplinaAluno() {
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
         String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja trancar uma disciplina: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
@@ -231,6 +266,10 @@ public class ModoAluno {
     }
 
     public void trancarSemestreAluno() {
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
         String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja trancar o semestre: ");
         Aluno alunoEncontrado = null;
         for (Aluno aluno : alunos) {
@@ -244,43 +283,39 @@ public class ModoAluno {
             return;
         }
         alunoEncontrado.trancarSemestre(alunoEncontrado.getMatricula());       
-        JOptionPane.showMessageDialog(null,"Semestre trancado com sucesso para o aluno " + alunoEncontrado.getNome() + "!" );
-    }
-
-    public void excluirAluno() {
-        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja excluir: ");
-        Aluno alunoEncontrado = null;
-        for (Aluno aluno : alunos) {
-            if (aluno.getMatricula().equals(matricula)) {
-                alunoEncontrado = aluno;
-                break;
-            }
-        }
-        if (alunoEncontrado == null) {
-            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
-            return;
-        }
-        alunos.remove(alunoEncontrado);
-        JOptionPane.showMessageDialog(null, "O aluno: " + alunoEncontrado.getNome() + "foi excluído com sucesso!");
     }
 
     public void salvarDadosAlunos() {
-        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream("alunos.txt"))) {
-            oos.writeObject(alunos);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar dados: " + e.getMessage());
+        try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_DADOS))) {
+            for (Aluno aluno : alunos) {
+                writer.println("Nome: " + aluno.getNome());
+                writer.println("Matrícula: " + aluno.getMatricula());
+                writer.println("Curso: " + aluno.getCurso());
+                writer.println("Tipo de Aluno: " + aluno.getTipoAluno());
+                writer.println("Disciplinas já feitas: " + String.join(", ", aluno.getDisciplinasFeitas()));
+                writer.println();
+            }
+            JOptionPane.showMessageDialog(null, "Dados dos alunos salvos com sucesso em " + ARQUIVO_DADOS);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar os dados dos alunos: " + e.getMessage());
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void carregarDadosAlunos() {
-        java.io.File arquivo = new java.io.File("alunos.txt");
-        if (!arquivo.exists()) return;
-        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream(arquivo))) {
-            alunos = (List<Aluno>) ois.readObject();
-            if (alunos == null) alunos = new ArrayList<>();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao carregar dados: " + e.getMessage());
+        alunos.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO_DADOS))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(";");
+                if (dados.length == 5) {
+                    alunos.add(new Aluno(dados[0], dados[1], dados[2], dados[3], List.of(dados[4].split(","))));
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Dados dos alunos carregados com sucesso de " + ARQUIVO_DADOS);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Arquivo não encontrado: " + ARQUIVO_DADOS);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar os dados dos alunos: " + e.getMessage());
         }
     }
 }

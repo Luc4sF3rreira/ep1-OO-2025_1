@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
 
 public class JanelaAluno extends JFrame {    
     private ModoAluno modoAluno;
@@ -7,8 +8,10 @@ public class JanelaAluno extends JFrame {
     public JanelaAluno() {
         super("Modo Aluno");
         modoAluno = new ModoAluno();
+        modoAluno.carregarDadosAlunos();
         setSize(450,600);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -56,6 +59,14 @@ public class JanelaAluno extends JFrame {
         botaoPainel.add(botaoTrancarDisciplina);
         botaoPainel.add(botaoTrancarSemestre);
         botaoPainel.add(botaoVoltar);
+
+        addWindowStateListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                modoAluno.salvarDadosAlunos();
+                super.windowClosing(e);
+            }
+        });
 
         panel.add(botaoPainel, BorderLayout.CENTER);
         add(panel);
