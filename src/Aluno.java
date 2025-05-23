@@ -15,15 +15,16 @@ public class Aluno {
         this.nome = nome;
         this.matricula = matricula;
         this.curso = curso;
+        this.tipoAluno = tipoAluno;
         this.turmasMatriculadas = new ArrayList<>();
-        this.disciplinasFeitas = new ArrayList<>();
+        this.disciplinasFeitas = new ArrayList<>(disciplinasFeitas);
     }
     public String getNome() {return nome; }
     public String getMatricula() {return matricula; } 
     public String getCurso() {return curso; }
     public String getTipoAluno() {return tipoAluno; }
     public List<Turmas> getTurmasMatriculadas() {return turmasMatriculadas; }
-    public List<String> getDisciplinasFeitas() {return disciplinasFeitas; }
+    public List<String> getDisciplinasFeitas() {return new ArrayList<>(disciplinasFeitas); }
     public Avaliacao getAvaliacao () {return avaliacao;}
     public void setNome(String nome) {this.nome = nome; }
     public void setMatricula(String matricula) {this.matricula = matricula; }
@@ -64,6 +65,15 @@ public class Aluno {
             turma.adicionarAluno(aluno);
             aluno.getTurmasMatriculadas().add(turma);
 
+            for (String preRequisito : turma.getPreRequisitos()) {
+                boolean possuiPreRequisito = aluno.getDisciplinasFeitas().stream()
+                    .map(String::toLowerCase)
+                    .anyMatch(disciplina -> disciplina.equals(preRequisito.toLowerCase()));
+                if (!possuiPreRequisito) {
+                    System.out.println("Aluno " + aluno.getNome() + " não pode se matricular na turma " + turma.getNome() + " porque não tem o pré-requisito: " + preRequisito);
+                    return;
+                }
+            }
             if (!turma.getPreRequisitos().isEmpty()) {
                 for (String preRequisito : turma.getPreRequisitos())
                     if (aluno.getDisciplinasFeitas().stream().noneMatch(disciplina -> disciplina.equals(preRequisito)))

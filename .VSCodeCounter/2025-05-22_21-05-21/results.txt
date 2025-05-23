@@ -1,0 +1,37 @@
+Date : 2025-05-22 21:05:21
+Directory : d:\Java\EP1 OO\src
+Total : 13 files,  936 codes, 1 comments, 147 blanks, all 1084 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Java     |         13 |        936 |          1 |        147 |      1,084 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                               | files      | code       | comment    | blank      | total      |
++----------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                  |         13 |        936 |          1 |        147 |      1,084 |
++----------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                           | language | code       | comment    | blank      | total      |
++----------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\Java\EP1 OO\src\Aluno.java                      | Java     |         89 |          0 |          8 |         97 |
+| d:\Java\EP1 OO\src\AlunoEspecial.java              | Java     |         19 |          0 |          6 |         25 |
+| d:\Java\EP1 OO\src\Avaliacao.java                  | Java     |         54 |          0 |          6 |         60 |
+| d:\Java\EP1 OO\src\Disciplina.java                 | Java     |         17 |          0 |         11 |         28 |
+| d:\Java\EP1 OO\src\JanelaAluno.java                | Java     |         48 |          0 |         19 |         67 |
+| d:\Java\EP1 OO\src\JanelaAvaliacao_Frequencia.java | Java     |         59 |          0 |         16 |         75 |
+| d:\Java\EP1 OO\src\JanelaDisciplina_Turma.java     | Java     |         48 |          0 |         14 |         62 |
+| d:\Java\EP1 OO\src\JanelaPrincipal.java            | Java     |         33 |          0 |         10 |         43 |
+| d:\Java\EP1 OO\src\ModoAluno.java                  | Java     |        260 |          0 |         14 |        274 |
+| d:\Java\EP1 OO\src\ModoAvaliacao_Frequencia.java   | Java     |         89 |          0 |         10 |         99 |
+| d:\Java\EP1 OO\src\ModoDisciplina_Turma.java       | Java     |        156 |          1 |         26 |        183 |
+| d:\Java\EP1 OO\src\SistemaAcademico.java           | Java     |         12 |          0 |          2 |         14 |
+| d:\Java\EP1 OO\src\Turmas.java                     | Java     |         52 |          0 |          5 |         57 |
+| Total                                              |          |        936 |          1 |        147 |      1,084 |
++----------------------------------------------------+----------+------------+------------+------------+------------+

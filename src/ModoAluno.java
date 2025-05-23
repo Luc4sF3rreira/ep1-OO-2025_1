@@ -11,7 +11,10 @@ public class ModoAluno {
     public void cadastrarAlunos() {    
         while (respostas) {
             String nome = JOptionPane.showInputDialog(null, "Digite seu nome:");
-
+            while (nome.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Nome inválido. Digite novamente.");
+                nome = JOptionPane.showInputDialog(null, "Digite seu nome: ");
+            }
             String matricula = JOptionPane.showInputDialog(null, "Digite sua matrícula, precisa conter 9 dígitos: ");
             while (matricula.length() != 9) {
                 JOptionPane.showMessageDialog(null, "Matrícula inválida. A matrícula deve conter 9 dígitos.");
@@ -39,11 +42,7 @@ public class ModoAluno {
                 JOptionPane.showMessageDialog(null, "Tipo de aluno inválido. Digite 'Comum' ou 'Especial'");
                 tipoAluno = JOptionPane.showInputDialog(null, "Especifique novamente o tipo de aluno (Comum/Especial): ");
             }
-            if (tipoAluno.equalsIgnoreCase("comum")) {
-                tipoAluno = "Comum";
-            } else {
-                tipoAluno = "Especial";
-            }
+                        
             String disciplinasFeitas = JOptionPane.showInputDialog(null, "Digite as disciplinas já feitas (Sem abreviações e separadas por vírgula):");
             List<String> listaDisciplinasFeitas = new ArrayList<>();
             for (String disciplina : disciplinasFeitas.split(",")) {
@@ -107,15 +106,19 @@ public class ModoAluno {
                 return;
             }
         String opcao = JOptionPane.showInputDialog(null, "O que deseja editar?\n" +
-                "Nome\n" +
-                "Matrícula\n" +
-                "Curso\n" +
-                "Tipo de aluno\n" +
-                "Disciplinas já feitas\n" +
-                "Digite a opção desejada: ");
+                "       Nome\n" +
+                "       Matrícula\n" +
+                "       Curso\n" +
+                "       Tipo de aluno\n" +
+                "       Disciplinas já feitas\n" +
+                "       Digite a opção desejada: ");
         switch (opcao.toLowerCase()) {
             case "nome":
                 String novoNome = JOptionPane.showInputDialog(null, "Digite o novo nome: ");
+                while (novoNome.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Nome inválido. Digite novamente.");
+                    novoNome = JOptionPane.showInputDialog(null, "Digite o novo nome: ");
+                }
                 alunoEncontrado.setNome(novoNome);
                 break;
             case "matrícula":
@@ -137,6 +140,10 @@ public class ModoAluno {
                 break;
             case "curso":
                 String novoCurso = JOptionPane.showInputDialog(null, "Digite o novo curso: ");
+                while (novoCurso.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Curso inválido. Digite novamente.");
+                    novoCurso = JOptionPane.showInputDialog(null, "Digite o novo curso: ");
+                }
                 alunoEncontrado.setCurso(novoCurso);
                 break;
             case "tipo de aluno":
@@ -156,7 +163,7 @@ public class ModoAluno {
                 alunoEncontrado.setDisciplinasFeitas(listaDisciplinas);
                 break;
             default:
-                JOptionPane.showMessageDialog(null, "Opção inválida" );            
+                JOptionPane.showMessageDialog(null, "Opção inválida");            
             }        
         JOptionPane.showMessageDialog(null, "Edição feita com sucesso!");
         StringBuilder dadosEditados = new StringBuilder();
@@ -164,7 +171,7 @@ public class ModoAluno {
         dadosEditados.append("Matrícula: ").append(alunoEncontrado.getMatricula()).append("\n");
         dadosEditados.append("Curso: ").append(alunoEncontrado.getCurso()).append("\n");
         dadosEditados.append("Tipo: ").append(alunoEncontrado.getTipoAluno()).append("\n");
-        dadosEditados.append("Disciplinas já feitas: ").append(String.join(", ", alunoEncontrado.getDisciplinasFeitas()));
+        dadosEditados.append("Disciplinas já feitas: ").append(alunoEncontrado.getDisciplinasFeitas());
         JOptionPane.showMessageDialog(null, dadosEditados.toString());
     }        
     
@@ -173,9 +180,15 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
             return;
         }
-        JOptionPane.showMessageDialog(null, "---Lista de Alunos---");
+        JOptionPane.showMessageDialog(null, "Lista de Alunos Cadastrados");
         for (Aluno aluno : alunos) {
-            JOptionPane.showMessageDialog(null, "Nome: " + aluno.getNome() + "\nMatricula: " + aluno.getMatricula() + "\nCurso: " + aluno.getCurso() + "\nTipo: " + aluno.getTipoAluno() + "\nDisciplinas já feitas: " + aluno.getDisciplinasFeitas());    
+            StringBuilder dadosAluno = new StringBuilder();
+            dadosAluno.append("Nome: ").append(aluno.getNome()).append("\n");
+            dadosAluno.append("Matrícula: ").append(aluno.getMatricula()).append("\n");
+            dadosAluno.append("Curso: ").append(aluno.getCurso()).append("\n");
+            dadosAluno.append("Tipo: ").append(aluno.getTipoAluno()).append("\n");
+            dadosAluno.append("Disciplinas já feitas: ").append(aluno.getDisciplinasFeitas());
+            JOptionPane.showMessageDialog(null, dadosAluno.toString());
         }
     }
 
@@ -248,7 +261,7 @@ public class ModoAluno {
             return;
         }
         alunos.remove(alunoEncontrado);
-        JOptionPane.showMessageDialog(null, "Aluno " + alunoEncontrado.getNome() + " excluído com sucesso!");
+        JOptionPane.showMessageDialog(null, "O aluno: " + alunoEncontrado.getNome() + "foi excluído com sucesso!");
     }
 
     public void salvarDadosAlunos() {
