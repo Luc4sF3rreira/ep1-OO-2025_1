@@ -22,7 +22,7 @@ public class JanelaPrincipal extends JFrame{
         JButton botaoModoDisciplina_Turnma =  new JButton("Modo Disciplina/Turma");
         botaoModoDisciplina_Turnma.setFont(botaoModoDisciplina_Turnma.getFont().deriveFont(14.0f));
 
-        JButton botaoModoAvaliacao_Frequencia = new JButton("Modo Avaliação/Turma");
+        JButton botaoModoAvaliacao_Frequencia = new JButton("Modo Avaliação/Frequência");
         botaoModoAvaliacao_Frequencia.setFont(botaoModoAvaliacao_Frequencia.getFont().deriveFont(14.0f));
 
         JButton botaoSair = new JButton("Sair");
