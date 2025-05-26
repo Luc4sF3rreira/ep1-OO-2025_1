@@ -28,6 +28,7 @@ public class Turmas extends Disciplina {
         this.sala = sala;
         this.turmaHorario = turmaHorario;
         this.maxAlunos = maxAlunos;
+        this.vagasDisponiveis = (vagasDisponiveis != null) ? vagasDisponiveis : 0;
         this.totalAulas = totalAulas;
         this.alunosMatriculados = new ArrayList<>();
         todasTurmas.add(this);
@@ -50,6 +51,11 @@ public class Turmas extends Disciplina {
     public Integer getVagasDisponiveis() { return maxAlunos - vagasOcupadas; }
     public Disciplina getDisciplina() { return new Disciplina(getNome(), getCodigo(), getCargaHoraria(), getPreRequisitos()); }
     public void setVagasDisponiveis(Integer vagasDisponiveis) { this.vagasDisponiveis = vagasDisponiveis; }
+    public void setAlunosMatriculados(List<Aluno> alunosMatriculados) {
+        this.alunosMatriculados = alunosMatriculados;
+        this.vagasOcupadas = alunosMatriculados.size();
+        this.vagasDisponiveis = maxAlunos - vagasOcupadas;
+    }
 
     public void adicionarAluno(Aluno aluno) {
         if (vagasOcupadas < maxAlunos) {

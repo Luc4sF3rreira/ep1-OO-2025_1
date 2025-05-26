@@ -142,7 +142,6 @@ public class ModoDisciplina_Turma {
                     + "; Carga horária: " + disciplina.getCargaHoraria()
                     + "; Pré-requisitos: " + String.join(",", disciplina.getPreRequisitos()));
             }
-            JOptionPane.showMessageDialog(null, "Disciplinas salvas com sucesso em " + ARQUIVO_DADOS_DISCIPLINAS);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar disciplinas: " + e.getMessage());
         }
@@ -399,9 +398,9 @@ public class ModoDisciplina_Turma {
                 + "; Sala: " + (turma.getModalidade().equalsIgnoreCase("presencial") ? turma.getSala() : "")
                 + "; Horário: " + turma.getHorario()
                 + "; Máximo de alunos: " + turma.getMaxAlunos()
-                + "; Total de aulas: " + turma.getTotalAulas());
+                + "; Total de aulas: " + turma.getTotalAulas()
+                + "; Alunos Matriculados: " + (turma.getAlunosMatriculados() != null ? turma.getAlunosMatriculados().size() : 0));
             }
-            JOptionPane.showMessageDialog(null, "Turmas salvas com sucesso em " + ARQUIVOS_DADOS_TURMAS);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar turmas: " + e.getMessage());
         }
@@ -429,7 +428,19 @@ public class ModoDisciplina_Turma {
                 String sala = partes[7].split(": ", 2)[1].trim();
                 String horario = partes[8].split(": ", 2)[1].trim();
                 Integer maxAlunos = Integer.parseInt(partes[9].split(": ", 2)[1].trim());
-                Integer totalAulas = Integer.parseInt(partes[10].split(": ", 2)[1].trim());
+                Integer vagasDisponiveis = Integer.parseInt(partes[10].split(": ", 2)[1].trim());
+                Integer vagasOcupadas = maxAlunos - vagasDisponiveis;
+                Integer totalAulas = Integer.parseInt(partes[11].split(": ", 2)[1].trim());
+                List<String> alunosMatriculados = new ArrayList<>();
+                if (partes.length > 12) {
+                    String alunosStr = partes[12].split(": ", 2)[1].trim();
+                    if (!alunosStr.isEmpty()) {
+                        String[] alunosArray = alunosStr.split(",");
+                        for (String aluno : alunosArray) {
+                            alunosMatriculados.add(aluno.trim());
+                        }
+                    }
+                }
 
                 Disciplina disciplina = new Disciplina(nomeDisciplina, codigoDisciplina, 0, new ArrayList<>());
                 Turmas turma = new Turmas(disciplina, professor, semestre, numeroTurma, tipoAvaliacao, modalidade, sala, horario, maxAlunos, totalAulas);
@@ -442,6 +453,7 @@ public class ModoDisciplina_Turma {
 
     public List<Turmas> getTurmas() {return turmas;}
     public List<Disciplina> getDisciplinas() {return disciplinas;}
+    public void setTurmas(List<Turmas> turmas) {this.turmas = turmas;}
             
     public void salvarTudo() {
         salvarDadosDisciplinas();

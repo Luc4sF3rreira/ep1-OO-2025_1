@@ -15,9 +15,8 @@ public class Avaliacao {
         this.prova3 = prova3;
         this.listasExercicios = listasExercicios;
         this.trabalhos = trabalhos;
-        this.frequencia = presenca;
         this.totalAulas = totalAulas;
-
+        this.frequencia = presenca;
     }
     public String getTipo() {return tipoAvaliacao;}
     public double getProva1() {return prova1;}
@@ -27,20 +26,30 @@ public class Avaliacao {
     public double getTrabalhos() {return trabalhos;}
     public int getTotalAulas() {return totalAulas;}
     public int getPresenca() {return frequencia;}
-    
+    public double getMediaFinal() {return calcularMediaFinal();}
+    public int getFrequencia() {return calcularFrequencia();}
+    public String getSituacao() {return consultarSituacao();}
+    public void setProva1(double prova1) {this.prova1 = prova1;}
+    public void setProva2(double prova2) {this.prova2 = prova2;}
+    public void setProva3(double prova3) {this.prova3 = prova3;}
+    public void setListasExercicios(double listasExercicios) {this.listasExercicios = listasExercicios;}
+    public void setTrabalhos(double trabalhos) {this.trabalhos = trabalhos;}
+    public void setFrequencia(int frequencia) {this.frequencia = frequencia;}
+    public void setMediaFinal(double mediaFinal) {}
+    public void setSituacao(String situacao) {}
+
     public double calcularMediaFinal() {         
         if (tipoAvaliacao.equals("A")) {
-            return (prova1) + (prova2) + (prova3) + (listasExercicios) + (trabalhos) / 5;
+            return ((prova1 + prova2 + prova3 + listasExercicios + trabalhos)) / 5;
         } else if (tipoAvaliacao.equals("B")) {
-            return (prova1) + (prova2 * 2) + (prova3 * 3) + (listasExercicios) + (trabalhos) / 8;
+            return ((prova1 + (prova2 * 2) + (prova3 * 3) + listasExercicios + trabalhos)) / 8;
         } else {
             return 0.0; 
         }
     }
     
-    public double calcularFrequencia() {
-        if (totalAulas == 0) return 0;
-        return (frequencia * 100.0) / totalAulas;
+    public int calcularFrequencia() {
+        return frequencia;
     }
 
     public String consultarSituacao() {

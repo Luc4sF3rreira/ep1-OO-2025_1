@@ -56,18 +56,18 @@ public class JanelaAvaliacao_Frequencia extends JFrame{
     }
     private void lancarNotas() {
         modoAF.lancarNotasParaTurma(null, null);
-    }
+    }    
     private void relatorioTurmas() {
         modoAF.relatorioPorTurma(null);
     }
     private void relatorioDisciplinas() {
-        modoAF.relatorioPorDisciplina(null, getName());
+        modoAF.relatorioPorDisciplina(null);
     }
     private void relatorioProfessores() {
-        modoAF.relatorioPorProfessor(null, getName());
+        modoAF.relatorioPorProfessor(null);
     }
     private void boletinsAlunos() {
-        modoAF.exibirBoletimPorAluno(null, getName(), true);
+        modoAF.exibirBoletimPorAluno(null, rootPaneCheckingEnabled);
     }
 }
 

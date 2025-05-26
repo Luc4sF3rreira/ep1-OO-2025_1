@@ -47,8 +47,13 @@ public class ModoAluno {
                         
             String disciplinasFeitas = JOptionPane.showInputDialog(null, "Digite as disciplinas já feitas (Sem abreviações e separadas por vírgula):");
             List<String> listaDisciplinasFeitas = new ArrayList<>();
-            for (String disciplina : disciplinasFeitas.split(",")) {
-                listaDisciplinasFeitas.add(disciplina.trim());          
+            if (disciplinasFeitas != null && !disciplinasFeitas.trim().isEmpty()) {
+                for (String disciplina : disciplinasFeitas.split(",")) {
+                    String d = disciplina.trim();
+                    if (!d.isEmpty()) {
+                        listaDisciplinasFeitas.add(d);
+                    }
+                }
             }
 
             Aluno novoAluno = new Aluno(nome, matricula, curso, tipoAluno, listaDisciplinasFeitas);
@@ -83,110 +88,160 @@ public class ModoAluno {
         }
     }
         public void editarCadastroAluno() {
-        if (alunos.isEmpty()) {
+            if (alunos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
             return;
-        }
-        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja editar: ");
-        Aluno alunoEncontrado = null;
-        for (Aluno aluno : alunos) {
-            if (aluno.getMatricula().equals(matricula)) {
-                alunoEncontrado = aluno;
-                break;            
             }
-        }
-        if (alunoEncontrado == null) {
-                JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
-                return;
+            String[] opcoesAlunos = alunos.stream()
+            .map(a -> a.getNome() + " | Matrícula: " + a.getMatricula())
+            .toArray(String[]::new);
+            String alunoSelecionado = (String) JOptionPane.showInputDialog(
+            null,
+            "Selecione o aluno que deseja editar:",
+            "Editar Aluno",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            opcoesAlunos,
+            opcoesAlunos[0]);
+            if (alunoSelecionado == null) {
+            return;
             }
-        String opcao = JOptionPane.showInputDialog(null, "O que deseja editar?\n" +
-                "       Nome\n" +
-                "       Matrícula\n" +
-                "       Curso\n" +
-                "       Tipo de aluno\n" +
-                "       Disciplinas já feitas\n" +
-                "       Digite a opção desejada: ");
-        switch (opcao.toLowerCase()) {
+            Aluno alunoEncontrado = null;
+            for (Aluno a : alunos) {
+            String desc = a.getNome() + " | Matrícula: " + a.getMatricula();
+            if (desc.equals(alunoSelecionado)) {
+                alunoEncontrado = a;
+                break;
+            }
+            }
+            if (alunoEncontrado == null) {
+            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+            return;
+            }
+            String[] opcoesEdicao = {
+            "Nome",
+            "Matrícula",
+            "Curso",
+            "Tipo de aluno",
+            "Disciplinas já feitas"
+            };
+            String opcao = (String) JOptionPane.showInputDialog(
+            null,
+            "O que deseja editar?",
+            "Editar Campo",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            opcoesEdicao,
+            opcoesEdicao[0]);
+            if (opcao == null) {
+            return;
+            }
+            switch (opcao.toLowerCase()) {
             case "nome":
                 String novoNome = JOptionPane.showInputDialog(null, "Digite o novo nome: ");
-                while (novoNome.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Nome inválido. Digite novamente.");
-                    novoNome = JOptionPane.showInputDialog(null, "Digite o novo nome: ");
+                while (novoNome == null || novoNome.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Nome inválido. Digite novamente.");
+                novoNome = JOptionPane.showInputDialog(null, "Digite o novo nome: ");
                 }
                 alunoEncontrado.setNome(novoNome);
                 break;
             case "matrícula":
             case "matricula":
-                String novaMatricula = JOptionPane.showInputDialog(null, "Digite a nova matrícula: ");
-                alunoEncontrado.setMatricula(novaMatricula);
+                String novaMatricula = JOptionPane.showInputDialog(null, "Digite a nova matrícula (9 dígitos): ");
+                while (novaMatricula == null || novaMatricula.length() != 9) {
+                JOptionPane.showMessageDialog(null, "Matrícula inválida. A matrícula deve conter 9 dígitos.");
+                novaMatricula = JOptionPane.showInputDialog(null, "Digite a nova matrícula (9 dígitos): ");
+                }
                 boolean matriculaExiste;
                 do {
-                    matriculaExiste = false;
-                    for (Aluno aluno : alunos) {
-                        if (aluno.getMatricula().equals(novaMatricula)) {
-                            matriculaExiste = true;
-                            JOptionPane.showMessageDialog(null, "Matrícula já cadastrada. Digite uma matrícula diferente.");
-                            novaMatricula = JOptionPane.showInputDialog(null, "Digite outra matrícula:");
-                            break;
-                        }
+                matriculaExiste = false;
+                for (Aluno aluno : alunos) {
+                    if (aluno != alunoEncontrado && aluno.getMatricula().equals(novaMatricula)) {
+                    matriculaExiste = true;
+                    JOptionPane.showMessageDialog(null, "Matrícula já cadastrada. Digite uma matrícula diferente.");
+                    novaMatricula = JOptionPane.showInputDialog(null, "Digite outra matrícula (9 dígitos):");
+                    break;
                     }
+                }
                 } while (matriculaExiste);
+                alunoEncontrado.setMatricula(novaMatricula);
                 break;
             case "curso":
                 String novoCurso = JOptionPane.showInputDialog(null, "Digite o novo curso: ");
-                while (novoCurso.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Curso inválido. Digite novamente.");
-                    novoCurso = JOptionPane.showInputDialog(null, "Digite o novo curso: ");
+                while (novoCurso == null || novoCurso.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Curso inválido. Digite novamente.");
+                novoCurso = JOptionPane.showInputDialog(null, "Digite o novo curso: ");
                 }
                 alunoEncontrado.setCurso(novoCurso);
                 break;
             case "tipo de aluno":
                 String novoTipoAluno = JOptionPane.showInputDialog(null, "Digite o novo tipo de aluno (Comum/Especial): ");
-                while (!novoTipoAluno.equalsIgnoreCase("comum") && !novoTipoAluno.equalsIgnoreCase("especial")) {
-                    JOptionPane.showMessageDialog(null, "Tipo de aluno inválido. Digite 'Comum' ou 'Especial'");
-                    novoTipoAluno = JOptionPane.showInputDialog(null, "Especifique novamente o tipo de aluno (Comum/Especial): ");
+                while (novoTipoAluno == null || (!novoTipoAluno.equalsIgnoreCase("comum") && !novoTipoAluno.equalsIgnoreCase("especial"))) {
+                JOptionPane.showMessageDialog(null, "Tipo de aluno inválido. Digite 'Comum' ou 'Especial'");
+                novoTipoAluno = JOptionPane.showInputDialog(null, "Especifique novamente o tipo de aluno (Comum/Especial): ");
                 }
                 alunoEncontrado.setTipoAluno(novoTipoAluno);
                 break;
             case "disciplinas já feitas":
                 String novasDisciplinasFeitas = JOptionPane.showInputDialog(null, "Digite as novas disciplinas já feitas (Sem abreviações e separadas por vírgulas)");
                 List<String> listaDisciplinas = new ArrayList<>();
+                if (novasDisciplinasFeitas != null && !novasDisciplinasFeitas.trim().isEmpty()) {
                 for (String disciplina : novasDisciplinasFeitas.split(",")) {
                     listaDisciplinas.add(disciplina.trim());
-            }
+                }
+                }
                 alunoEncontrado.setDisciplinasFeitas(listaDisciplinas);
                 break;
             default:
-                JOptionPane.showMessageDialog(null, "Opção inválida");            
-            }        
-        JOptionPane.showMessageDialog(null, "Edição feita com sucesso!");
-    }
+                JOptionPane.showMessageDialog(null, "Opção inválida");
+            }
+            JOptionPane.showMessageDialog(null, "Edição feita com sucesso!");
+        }
 
     public void excluirAluno() {
         if (alunos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
             return;
         }
-        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja excluir: ");
-        Aluno alunoEncontrado = null;
-        for (Aluno aluno : alunos) {
-            if (aluno.getMatricula().equals(matricula)) {
-                alunoEncontrado = aluno;
+        String[] opcoes = new String[alunos.size()];
+        for (int i = 0; i < alunos.size(); i++) {
+            opcoes[i] = alunos.get(i).getNome() + " | Matrícula: " + alunos.get(i).getMatricula();
+        }
+        String alunoSelecionado = (String) JOptionPane.showInputDialog(
+            null,
+            "Selecione o aluno que deseja excluir:",
+            "Excluir Aluno",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            opcoes,
+            opcoes[0]);
+        if (alunoSelecionado == null) {
+            return;
+        }
+        Aluno alunoParaRemover = null;
+        for (Aluno a : alunos) {
+            String desc = a.getNome() + " | Matrícula: " + a.getMatricula();
+            if (desc.equals(alunoSelecionado)) {
+                alunoParaRemover = a;
                 break;
             }
         }
-        if (alunoEncontrado == null) {
-            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
-            return;
+        if (alunoParaRemover != null) {
+            alunos.remove(alunoParaRemover);
+            JOptionPane.showMessageDialog(null, "O aluno: " + alunoParaRemover.getNome() + " foi excluído com sucesso!");
         }
-        alunos.remove(alunoEncontrado);
-        JOptionPane.showMessageDialog(null, "O aluno: " + alunoEncontrado.getNome() + " foi excluído com sucesso!");
+    }
+    public List<Turmas> salvarDadosTurmas () {
+        ModoDisciplina_Turma modoDT = new ModoDisciplina_Turma();
+        modoDT.salvarDadosTurmas();
+        return modoDT.getTurmas();
     }
 
     public List<Turmas> carregarDadosTurmas() {
         ModoDisciplina_Turma modoDT = new ModoDisciplina_Turma();
         modoDT.carregarDadosTurmas();
         return modoDT.getTurmas();
+        
     }
     public void matricularAlunoTurma(List<Turmas> turmas) {        
         if (turmas == null || turmas.isEmpty()) {
@@ -226,6 +281,11 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
+        if (alunoSelecionado.getTurmasMatriculadas() == null) {
+            alunoSelecionado.setTurmasMatriculadas(new ArrayList<>());
+        }
+        List<Turmas> turmasMatriculadas = alunoSelecionado.getTurmasMatriculadas();
+
         String[] nomesTurmas = turmas.stream()
             .map(t -> t.getNome() + " | Professor: " + t.getProfessor() + " | Horário: " + t.getHorario())
             .toArray(String[]::new);
@@ -243,7 +303,7 @@ public class ModoAluno {
         String turmaSelecionada = turmaSelecionadaStr.split("\\|")[0].trim();
         Turmas turmaObj = null;
         for (Turmas t : turmas) {
-            if (t.getNome().equals(turmaSelecionada)) {
+            if (t.getNome().equalsIgnoreCase(turmaSelecionada)) {
                 turmaObj = t;
                 break;
             }
@@ -252,20 +312,68 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Turma não encontrada.");
             return;
         }
-        if (alunoSelecionado.getTurmasMatriculadas() == null) {
-            alunoSelecionado.setTurmasMatriculadas(new ArrayList<>());
-        }
-        List<Turmas> turmasMatriculadas = alunoSelecionado.getTurmasMatriculadas();
         for (Turmas t : turmasMatriculadas) {
             if (t.getNome().equalsIgnoreCase(turmaObj.getNome())) {
                 JOptionPane.showMessageDialog(null, "O aluno já está matriculado nesta turma.");
                 return;
             }
         }
-        turmasMatriculadas.add(turmaObj);
-        JOptionPane.showMessageDialog(null, "Aluno matriculado na turma " + turmaSelecionada + " com sucesso!");
-    }
+        List<String> preRequisitos = turmaObj.getPreRequisitos();
+        List<String> disciplinasFeitas = alunoSelecionado.getDisciplinasFeitas();
+        boolean possuiTodosPreRequisitos = true;
+        StringBuilder faltando = new StringBuilder();
 
+        if (preRequisitos != null && !preRequisitos.isEmpty()) {
+            List<String> disciplinasFeitasNormalizadas = new ArrayList<>();
+            if (disciplinasFeitas != null) {
+                for (String feita : disciplinasFeitas) {
+                    disciplinasFeitasNormalizadas.add(feita.trim().toLowerCase());
+                }
+            }
+            for (String pre : preRequisitos) {
+                String preNormalizado = pre.trim().toLowerCase();
+                if (!disciplinasFeitasNormalizadas.contains(preNormalizado)) {
+                    possuiTodosPreRequisitos = false;
+                    faltando.append(pre.trim()).append(", ");
+                }
+            }
+        }
+
+        if (!possuiTodosPreRequisitos) {
+            String faltam = faltando.toString();
+            if (faltam.endsWith(", ")) {
+                faltam = faltam.substring(0, faltam.length() - 2);
+            }
+            JOptionPane.showMessageDialog(null, "O aluno não possui os seguintes pré-requisitos: " + faltam);
+            return;
+        }
+        if (turmaObj.getAlunosMatriculados() == null) {
+            turmaObj.setAlunosMatriculados(new ArrayList<>());
+        }
+        if (!turmaObj.getAlunosMatriculados().contains(alunoSelecionado)) {
+            turmaObj.getAlunosMatriculados().add(alunoSelecionado);
+        }
+
+        if (!turmasMatriculadas.contains(turmaObj)) {
+            turmasMatriculadas.add(turmaObj);
+            alunoSelecionado.setTurmasMatriculadas(turmasMatriculadas);
+        }
+
+        JOptionPane.showMessageDialog(null, "Aluno matriculado na turma " + turmaSelecionada + " com sucesso!");
+        salvarDadosAlunos();
+        if (turmas != null && !turmas.isEmpty()) {
+            ModoDisciplina_Turma modoDT = new ModoDisciplina_Turma();
+            if (turmaObj.getAlunosMatriculados() == null) {
+                turmaObj.setAlunosMatriculados(new ArrayList<>());
+            }
+            if (!turmaObj.getAlunosMatriculados().contains(alunoSelecionado)) {
+                turmaObj.getAlunosMatriculados().add(alunoSelecionado);
+            }
+            modoDT.setTurmas(turmas);
+            modoDT.salvarDadosTurmas();
+        }
+    }
+    
     public void trancarDisciplinaAluno() {
         if (alunos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
@@ -280,7 +388,7 @@ public class ModoAluno {
             }
         }
         if (alunoEncontrado == null) {
-            JOptionPane.showMessageDialog(null,"Aluno não encontrado.");
+            JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
         List<Turmas> turmasMatriculadas = alunoEncontrado.getTurmasMatriculadas();
@@ -288,24 +396,22 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "O aluno não está matriculado em nenhuma disciplina.");
             return;
         }
-        JOptionPane.showMessageDialog(null, "Disciplinas em que o aluno está matriculado:");
-        for (Turmas turma : turmasMatriculadas) {
-            JOptionPane.showMessageDialog(null, "- " + turma);
-        }
-        String nomeDisciplina = JOptionPane.showInputDialog(null, "Digite o nome da disciplina que deseja trancar: ");
-        Turmas disciplina = null;
-        for (Turmas t : turmasMatriculadas) {
-            if (t.getNome().equalsIgnoreCase(nomeDisciplina)) {
-                disciplina = t;
-                break;
-            }
-        }
-        if (disciplina == null) {
-            JOptionPane.showConfirmDialog(null, "O aluno não está matriculado nesta disciplina.");
+        String[] nomesTurmas = turmasMatriculadas.stream()
+            .map(Turmas::getNome)
+            .toArray(String[]::new);
+        String nomeDisciplina = (String) JOptionPane.showInputDialog(
+            null,
+            "Selecione a disciplina que deseja trancar:",
+            "Trancar Disciplina",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            nomesTurmas,
+            nomesTurmas[0]);
+        if (nomeDisciplina == null) {
             return;
         }
-        alunoEncontrado.trancarDisciplina(disciplina);
-        JOptionPane.showMessageDialog(null, "Disciplina " + disciplina.getNome() + " trancada com sucesso para o aluno " + alunoEncontrado.getNome() + "!");
+        alunoEncontrado.trancarDisciplina();
+        JOptionPane.showMessageDialog(null, "Disciplina " + nomeDisciplina + " trancada para o aluno " + alunoEncontrado.getNome() + "!");
     }
 
     public void trancarSemestreAluno() {
@@ -313,11 +419,25 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
             return;
         }
-        String matricula = JOptionPane.showInputDialog(null, "Digite a matrícula do aluno que deseja trancar o semestre: ");
+        String[] opcoesAlunos = alunos.stream()
+            .map(a -> a.getNome() + " | Matrícula: " + a.getMatricula())
+            .toArray(String[]::new);
+        String alunoSelecionado = (String) JOptionPane.showInputDialog(
+            null,
+            "Selecione o aluno que deseja trancar o semestre:",
+            "Trancar Semestre",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            opcoesAlunos,
+            opcoesAlunos[0]);
+        if (alunoSelecionado == null) {
+            return;
+        }
         Aluno alunoEncontrado = null;
-        for (Aluno aluno : alunos) {
-            if (aluno.getMatricula().equals(matricula)) {
-                alunoEncontrado = aluno;
+        for (Aluno a : alunos) {
+            String desc = a.getNome() + " | Matrícula: " + a.getMatricula();
+            if (desc.equals(alunoSelecionado)) {
+                alunoEncontrado = a;
                 break;
             }
         }
@@ -325,7 +445,8 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
-        alunoEncontrado.trancarSemestre(alunoEncontrado.getMatricula());       
+        alunoEncontrado.trancarSemestre(alunoSelecionado);
+        JOptionPane.showMessageDialog(null, "Semestre trancado para o aluno " + alunoEncontrado.getNome() + "!");
     }
 
     public void salvarDadosAlunos() {
@@ -339,9 +460,8 @@ public class ModoAluno {
                     String.join(",", aluno.getDisciplinasFeitas())
                     + "; Turmas Matriculadas: "
                     + aluno.getTurmasMatriculadas().stream().map(Turmas::getNome).reduce((a, b) -> a + ", " + b).orElse("Nenhuma turma matriculada")
-                );
+                    + "; Avaliação: " + aluno.getAvaliacao());
             }
-            JOptionPane.showMessageDialog(null, "Dados dos alunos salvos com sucesso em " + ARQUIVO_DADOS_ALUNOS);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar os dados dos alunos: " + e.getMessage());
         }
@@ -369,13 +489,26 @@ public class ModoAluno {
                         disciplinasFeitas.add(d.trim());
                     }
                 }
-                List<String> turmasMatriculadas = new ArrayList<>();
+                List<Turmas> turmasMatriculadas = new ArrayList<>();
                 if (partes.length > 5 && !partes[5].replace("Turmas Matriculadas:", "").trim().isEmpty()) {
-                    for (String t : partes[5].replace("Turmas Matriculadas:", "").trim().split(",")) {
-                        turmasMatriculadas.add(t.trim());
+                    String turmasStr = partes[5].replace("Turmas Matriculadas:", "").trim();
+                    if (!turmasStr.equals("Nenhuma turma matriculada")) {
+                        String[] nomesTurmas = turmasStr.split(",");
+                        List<Turmas> todasTurmas = carregarDadosTurmas();
+                        for (String nomeTurma : nomesTurmas) {
+                            String nomeTurmaTrim = nomeTurma.trim();
+                            for (Turmas t : todasTurmas) {
+                                if (t.getNome().equalsIgnoreCase(nomeTurmaTrim)) {
+                                    turmasMatriculadas.add(t);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
-                alunos.add(new Aluno(nome, matricula, curso, tipoAluno, disciplinasFeitas));
+                Aluno aluno = new Aluno(nome, matricula, curso, tipoAluno, disciplinasFeitas);
+                aluno.setTurmasMatriculadas(turmasMatriculadas);
+                alunos.add(aluno);
             }
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Arquivo não encontrado: " + ARQUIVO_DADOS_ALUNOS);
@@ -384,4 +517,5 @@ public class ModoAluno {
         }
     }
     public List<Aluno> getAlunos() {return alunos;}
+    public void setAlunos(List<Aluno> alunos) {this.alunos = alunos;}
 }
