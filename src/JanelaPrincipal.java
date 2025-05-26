@@ -25,7 +25,7 @@ public class JanelaPrincipal extends JFrame{
         JButton botaoModoAvaliacao_Frequencia = new JButton("Modo Avaliação/Turma");
         botaoModoAvaliacao_Frequencia.setFont(botaoModoAvaliacao_Frequencia.getFont().deriveFont(14.0f));
 
-        JButton botaoSair = new JButton("Sair e salvar dados");
+        JButton botaoSair = new JButton("Sair");
         botaoSair.setFont(botaoSair.getFont().deriveFont(14.0f));
 
         botaoModoAluno.addActionListener(e -> new JanelaAluno().setVisible(true));

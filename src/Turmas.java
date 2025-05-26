@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Turmas extends Disciplina {
-    public static Object turmas;
     private String professor;
     private String semestre;
     private Integer numeroTurma;
@@ -56,7 +56,7 @@ public class Turmas extends Disciplina {
             alunosMatriculados.add(aluno);
             vagasDisponiveis--;
         } else {
-            System.out.println("Não há vagas disponíveis na turma " + numeroTurma + ".");
+            JOptionPane.showMessageDialog(null, "Não há vagas disponíveis na turma " + numeroTurma + ".");
         }
     }
 

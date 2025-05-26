@@ -17,6 +17,10 @@ public class Disciplina {
     public String getCodigo() {return codigo; }
     public Integer getCargaHoraria() {return cargaHoraria; }
     public List<String> getPreRequisitos() {return preRequisitos; }
+    public void setNome(String nome) { this.nome = nome; }
+    public void setCodigo(String codigo) { this.codigo = codigo; }
+    public void setCargaHoraria(Integer cargaHoraria) { this.cargaHoraria = cargaHoraria; }
+    public void setPreRequisitos(List<String> preRequisitos) { this.preRequisitos = preRequisitos; }
 
     public void adicionarPreRequisito(String codigoDisciplina) {
         if (!preRequisitos.contains(codigoDisciplina)) {

@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class JanelaAluno extends JFrame {    
     private ModoAluno modoAluno;
@@ -49,7 +50,7 @@ public class JanelaAluno extends JFrame {
         botaoMatricularTurma.addActionListener(e -> matricularAlunoTurma());
         botaoTrancarDisciplina.addActionListener(e -> modoAluno.trancarDisciplinaAluno());
         botaoTrancarSemestre.addActionListener(e -> modoAluno.trancarSemestreAluno());
-        botaoVoltar.addActionListener(e -> { modoAluno.salvarDadosAlunos();dispose();});
+        botaoVoltar.addActionListener(e -> { modoAluno.salvarDadosAlunos(); dispose();});
 
         botaoPainel.add(botaoCadastrarAlunos);
         botaoPainel.add(botaoEditarCadastro);
@@ -62,7 +63,7 @@ public class JanelaAluno extends JFrame {
 
         addWindowStateListener(new WindowAdapter() {
             @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
+            public void windowClosing(WindowEvent e) {
                 modoAluno.salvarDadosAlunos();
                 super.windowClosing(e);
             }
