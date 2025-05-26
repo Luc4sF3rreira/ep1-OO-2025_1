@@ -55,7 +55,7 @@ public class JanelaAvaliacao_Frequencia extends JFrame{
         add(panel);
     }
     private void lancarNotas() {
-        modoAF.lancarNotasParaTurma(null);
+        modoAF.lancarNotasParaTurma(null, null);
     }
     private void relatorioTurmas() {
         modoAF.relatorioPorTurma(null);
