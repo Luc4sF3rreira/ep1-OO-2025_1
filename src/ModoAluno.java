@@ -226,7 +226,6 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
-        // Monta uma lista de turmas com nome, professor e horário
         String[] nomesTurmas = turmas.stream()
             .map(t -> t.getNome() + " | Professor: " + t.getProfessor() + " | Horário: " + t.getHorario())
             .toArray(String[]::new);
@@ -384,4 +383,5 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Erro ao carregar os dados dos alunos: " + e.getMessage());
         }
     }
+    public List<Aluno> getAlunos() {return alunos;}
 }

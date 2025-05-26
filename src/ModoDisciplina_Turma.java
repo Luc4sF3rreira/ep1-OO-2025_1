@@ -441,6 +441,7 @@ public class ModoDisciplina_Turma {
     }
 
     public List<Turmas> getTurmas() {return turmas;}
+    public List<Disciplina> getDisciplinas() {return disciplinas;}
             
     public void salvarTudo() {
         salvarDadosDisciplinas();
