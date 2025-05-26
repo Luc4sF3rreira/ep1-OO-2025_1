@@ -439,6 +439,8 @@ public class ModoDisciplina_Turma {
             JOptionPane.showMessageDialog(null, "Erro ao carregar os dados das turmas: " + e.getMessage());
         }
     }
+
+    public List<Turmas> getTurmas() {return turmas;}
             
     public void salvarTudo() {
         salvarDadosDisciplinas();

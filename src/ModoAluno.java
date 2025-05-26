@@ -183,9 +183,12 @@ public class ModoAluno {
         JOptionPane.showMessageDialog(null, "O aluno: " + alunoEncontrado.getNome() + " foi excluído com sucesso!");
     }
 
-    public List<Turmas> carregarDadosTurmas() {return Turmas.getTodasTurmas();}
-
-    public void matricularAlunoTurma(List<Turmas> turmas) {
+    public List<Turmas> carregarDadosTurmas() {
+        ModoDisciplina_Turma modoDT = new ModoDisciplina_Turma();
+        modoDT.carregarDadosTurmas();
+        return modoDT.getTurmas();
+    }
+    public void matricularAlunoTurma(List<Turmas> turmas) {        
         if (turmas == null || turmas.isEmpty()) {
             turmas = carregarDadosTurmas();
             if (turmas == null || turmas.isEmpty()) {
@@ -223,18 +226,22 @@ public class ModoAluno {
             JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
             return;
         }
-        String[] nomesTurmas = turmas.stream().map(Turmas::getNome).toArray(String[]::new);
-        String turmaSelecionada = (String) JOptionPane.showInputDialog(
+        // Monta uma lista de turmas com nome, professor e horário
+        String[] nomesTurmas = turmas.stream()
+            .map(t -> t.getNome() + " | Professor: " + t.getProfessor() + " | Horário: " + t.getHorario())
+            .toArray(String[]::new);
+        String turmaSelecionadaStr = (String) JOptionPane.showInputDialog(
             null,
-            "Selecione a turma para matrícula:",
+            "Selecione a turma para matrícula (Nome | Professor | Horário):",
             "Selecionar Turma",
             JOptionPane.PLAIN_MESSAGE,
             null,
             nomesTurmas,
             nomesTurmas[0]);
-        if (turmaSelecionada == null) {
+        if (turmaSelecionadaStr == null) {
             return; 
         }
+        String turmaSelecionada = turmaSelecionadaStr.split("\\|")[0].trim();
         Turmas turmaObj = null;
         for (Turmas t : turmas) {
             if (t.getNome().equals(turmaSelecionada)) {
