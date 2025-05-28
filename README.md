@@ -21,7 +21,8 @@ Desenvolvimento de um sistema acadêmico para gerenciar alunos, disciplinas, pro
 2. **Execução:**  
    Executar o arquivo SistemaAcademico.java no botão Run Java
 
-3. **Estrutura de Pastas:**  
+3. **Estrutura de Pastas:**
+```bash
 EP1 OO/
 ├── src/
 │   |
@@ -46,6 +47,7 @@ EP1 OO/
 ├── disciplinas.txt                           # Arquivo de persistência das disciplinas
 ├── README.md                                 # Este arquivo
 └── turmas.txt                                # Arquivo de persistência das turmas
+```
 
 3. **Versão do JAVA utilizada:**  
    java 21.0.6
