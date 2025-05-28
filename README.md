@@ -25,8 +25,8 @@ Desenvolvimento de um sistema acadêmico para gerenciar alunos, disciplinas, pro
 ```bash
 EP1 OO/
 ├── src/
-│   |
-│   |
+│   │
+│   │
 │   ├── Aluno.java                              # Classe abstrata base
 │   ├── AlunoEspecial.java                      # Herança - aluno especial
 │   ├── Avaliacao.java                          # Dados da avaliação
